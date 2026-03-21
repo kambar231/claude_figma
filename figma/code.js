@@ -66,6 +66,9 @@ figma.ui.onmessage = async (msg) => {
     case "notify":
       figma.notify(msg.message);
       break;
+    case "resize":
+      figma.ui.resize(350, msg.height);
+      break;
     case "close-plugin":
       figma.closePlugin();
       break;
@@ -133,6 +136,8 @@ async function handleCommand(command, params) {
       return await createText(params);
     case "set_fill_color":
       return await setFillColor(params);
+    case "set_fill_gradient":
+      return await setFillGradient(params);
     case "set_stroke_color":
       return await setStrokeColor(params);
     case "move_node":
@@ -909,10 +914,7 @@ async function createText(params) {
 
 async function setFillColor(params) {
   console.log("setFillColor", params);
-  const {
-    nodeId,
-    color: { r, g, b, a },
-  } = params || {};
+  const { nodeId, color, gradientType, gradientStops, gradientHandlePositions, opacity } = params || {};
 
   if (!nodeId) {
     throw new Error("Missing nodeId parameter");
@@ -927,7 +929,41 @@ async function setFillColor(params) {
     throw new Error(`Node does not support fills: ${nodeId}`);
   }
 
-  // Create RGBA color
+  // Gradient fill path
+  if (gradientType && gradientStops) {
+    const handles = gradientHandlePositions || [
+      { x: 0.5, y: 0.5 },
+      { x: 1, y: 0.5 },
+      { x: 0.5, y: 1 },
+    ];
+    // Convert handle positions to the gradientTransform matrix required by Figma API
+    const [p0, p1, p2] = handles;
+    const gradientTransform = [
+      [p1.x - p0.x, p2.x - p0.x, p0.x],
+      [p1.y - p0.y, p2.y - p0.y, p0.y],
+    ];
+    const mappedStops = gradientStops.map((stop) => ({
+      position: stop.position,
+      color: {
+        r: stop.r,
+        g: stop.g,
+        b: stop.b,
+        a: stop.a !== undefined ? stop.a : 1,
+      },
+    }));
+    const gradientFill = {
+      type: gradientType,
+      blendMode: "NORMAL",
+      gradientTransform,
+      gradientStops: mappedStops,
+    };
+    if (opacity !== undefined) gradientFill.opacity = opacity;
+    node.fills = [gradientFill];
+    return { id: node.id, name: node.name };
+  }
+
+  // Solid fill path
+  const { r, g, b, a } = color || {};
   const rgbColor = {
     r: parseFloat(r) || 0,
     g: parseFloat(g) || 0,
@@ -935,19 +971,13 @@ async function setFillColor(params) {
     a: parseFloat(a) || 1,
   };
 
-  // Set fill
   const paintStyle = {
     type: "SOLID",
-    color: {
-      r: parseFloat(rgbColor.r),
-      g: parseFloat(rgbColor.g),
-      b: parseFloat(rgbColor.b),
-    },
+    color: { r: parseFloat(rgbColor.r), g: parseFloat(rgbColor.g), b: parseFloat(rgbColor.b) },
     opacity: parseFloat(rgbColor.a),
   };
 
   console.log("paintStyle", paintStyle);
-
   node.fills = [paintStyle];
 
   return {
@@ -955,6 +985,50 @@ async function setFillColor(params) {
     name: node.name,
     fills: [paintStyle],
   };
+}
+
+async function setFillGradient(params) {
+  const { nodeId, gradientType, gradientStops, gradientHandlePositions, opacity } = params || {};
+
+  if (!nodeId) throw new Error("Missing nodeId parameter");
+  if (!gradientType) throw new Error("Missing gradientType parameter");
+  if (!gradientStops || !Array.isArray(gradientStops)) throw new Error("Missing or invalid gradientStops parameter");
+
+  const node = await figma.getNodeByIdAsync(nodeId);
+  if (!node) throw new Error(`Node not found with ID: ${nodeId}`);
+  if (!("fills" in node)) throw new Error(`Node does not support fills: ${nodeId}`);
+
+  const handles = gradientHandlePositions || [
+    { x: 0.5, y: 0.5 },
+    { x: 1, y: 0.5 },
+    { x: 0.5, y: 1 },
+  ];
+
+  const [p0, p1, p2] = handles;
+  const gradientTransform = [
+    [p1.x - p0.x, p2.x - p0.x, p0.x],
+    [p1.y - p0.y, p2.y - p0.y, p0.y],
+  ];
+
+  const gradientFill = {
+    type: gradientType,
+    blendMode: "NORMAL",
+    gradientTransform,
+    gradientStops: gradientStops.map((stop) => ({
+      position: stop.position,
+      color: {
+        r: stop.r,
+        g: stop.g,
+        b: stop.b,
+        a: stop.a !== undefined ? stop.a : 1,
+      },
+    })),
+  };
+  if (opacity !== undefined) gradientFill.opacity = opacity;
+
+  node.fills = [gradientFill];
+
+  return { id: node.id, name: node.name };
 }
 
 async function setStrokeColor(params) {
