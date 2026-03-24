@@ -1,0 +1,4 @@
+[submodule "balo"]
+	path = balo
+	url = https://github.com/RomanSlack/balo.git
+	branch = kambar-dev
