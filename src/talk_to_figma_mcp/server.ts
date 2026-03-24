@@ -636,6 +636,66 @@ server.tool(
   }
 );
 
+// Set Fill Gradient Tool
+server.tool(
+  "set_fill_gradient",
+  "Set the fill of a node to a radial or linear gradient in Figma",
+  {
+    nodeId: z.string().describe("The ID of the node to modify"),
+    gradientType: z
+      .enum(["GRADIENT_RADIAL", "GRADIENT_LINEAR"])
+      .describe("Type of gradient"),
+    gradientStops: z
+      .array(
+        z.object({
+          r: z.number().min(0).max(1).describe("Red (0-1)"),
+          g: z.number().min(0).max(1).describe("Green (0-1)"),
+          b: z.number().min(0).max(1).describe("Blue (0-1)"),
+          a: z.number().min(0).max(1).describe("Alpha (0-1)"),
+          position: z.number().min(0).max(1).describe("Stop position (0-1)"),
+        })
+      )
+      .describe("Gradient color stops"),
+    gradientHandlePositions: z
+      .array(z.object({ x: z.number(), y: z.number() }))
+      .length(3)
+      .optional()
+      .describe(
+        "Three handle positions [center, x-axis end, y-axis end] in 0-1 space. Defaults to radial centered fill."
+      ),
+    opacity: z.number().min(0).max(1).optional().describe("Overall opacity (0-1), default 1"),
+  },
+  async ({ nodeId, gradientType, gradientStops, gradientHandlePositions, opacity }: any) => {
+    try {
+      const result = await sendCommandToFigma("set_fill_gradient", {
+        nodeId,
+        gradientType,
+        gradientStops,
+        gradientHandlePositions,
+        opacity,
+      });
+      const typedResult = result as { name: string };
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Set ${gradientType} gradient fill on node "${typedResult.name}" with ${gradientStops.length} stops`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error setting gradient fill: ${error instanceof Error ? error.message : String(error)}`,
+          },
+        ],
+      };
+    }
+  }
+);
+
 // Set Stroke Color Tool
 server.tool(
   "set_stroke_color",
@@ -2622,6 +2682,7 @@ type FigmaCommand =
   | "create_frame"
   | "create_text"
   | "set_fill_color"
+  | "set_fill_gradient"
   | "set_stroke_color"
   | "move_node"
   | "resize_node"
@@ -2694,6 +2755,13 @@ type CommandParams = {
     g: number;
     b: number;
     a?: number;
+  };
+  set_fill_gradient: {
+    nodeId: string;
+    gradientType: "GRADIENT_RADIAL" | "GRADIENT_LINEAR";
+    gradientStops: Array<{ r: number; g: number; b: number; a: number; position: number }>;
+    gradientHandlePositions?: Array<{ x: number; y: number }>;
+    opacity?: number;
   };
   set_stroke_color: {
     nodeId: string;
