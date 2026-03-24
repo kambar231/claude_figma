@@ -65,6 +65,16 @@ const server = Bun.serve({
       return; // Upgraded to WebSocket
     }
 
+    // Channel discovery endpoint
+    const url = new URL(req.url);
+    if (url.pathname === "/channels") {
+      const info: Record<string, number> = {};
+      channels.forEach((clients, name) => { info[name] = clients.size; });
+      return new Response(JSON.stringify(info), {
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+      });
+    }
+
     // Return response for non-WebSocket requests
     return new Response("WebSocket server running", {
       headers: {
