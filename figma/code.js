@@ -262,6 +262,42 @@ async function handleCommand(command, params) {
       return await groupNodes(params);
     case "flatten_node":
       return await flattenNode(params);
+    case "set_text_properties":
+      return await setTextProperties(params);
+    case "boolean_operation":
+      return await booleanOperation(params);
+    case "set_constraints":
+      return await setConstraints(params);
+    case "set_stroke_properties":
+      return await setStrokeProperties(params);
+    case "create_component":
+      return await createComponent(params);
+    case "set_mask":
+      return await setMask(params);
+    case "set_plugin_data":
+      return await setPluginData(params);
+    case "create_page":
+      return await createPage(params);
+    case "set_per_corner_radius":
+      return await setPerCornerRadius(params);
+    case "create_style":
+      return await createStyle(params);
+    case "manage_variables":
+      return await manageVariables(params);
+    case "set_viewport":
+      return await setViewport(params);
+    case "manage_pages":
+      return await managePages(params);
+    case "set_export_settings":
+      return await setExportSettings(params);
+    case "set_scroll_behavior":
+      return await setScrollBehavior(params);
+    case "reparent_node":
+      return await reparentNode(params);
+    case "reorder_node":
+      return await reorderNode(params);
+    case "get_plugin_data":
+      return await getPluginData(params);
     default:
       throw new Error(`Unknown command: ${command}`);
   }
@@ -4423,4 +4459,312 @@ async function flattenNode(params) {
   if (!node) throw new Error("Node not found: " + params.nodeId);
   var flat = figma.flatten([node]);
   return { id: flat.id, name: flat.name };
+}
+
+// === Tier 1 commands ===
+
+async function setTextProperties(params) {
+  var node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node || node.type !== "TEXT") throw new Error("Not a text node");
+
+  if (node.fontName !== figma.mixed) {
+    await figma.loadFontAsync(node.fontName);
+  }
+
+  if (params.textDecoration !== undefined) node.textDecoration = params.textDecoration;
+  if (params.textCase !== undefined) node.textCase = params.textCase;
+  if (params.textAutoResize !== undefined) node.textAutoResize = params.textAutoResize;
+  if (params.maxLines !== undefined) node.maxLines = params.maxLines;
+  if (params.paragraphSpacing !== undefined) node.paragraphSpacing = params.paragraphSpacing;
+  if (params.paragraphIndent !== undefined) node.paragraphIndent = params.paragraphIndent;
+  if (params.lineHeight !== undefined) {
+    node.lineHeight = typeof params.lineHeight === "number"
+      ? { value: params.lineHeight, unit: "PIXELS" }
+      : { unit: "AUTO" };
+  }
+  if (params.letterSpacing !== undefined) {
+    node.letterSpacing = { value: params.letterSpacing, unit: "PIXELS" };
+  }
+  if (params.textAlignHorizontal !== undefined) node.textAlignHorizontal = params.textAlignHorizontal;
+  if (params.textAlignVertical !== undefined) node.textAlignVertical = params.textAlignVertical;
+
+  return { id: node.id, name: node.name };
+}
+
+async function booleanOperation(params) {
+  var nodes = [];
+  for (var i = 0; i < params.nodeIds.length; i++) {
+    var n = await figma.getNodeByIdAsync(params.nodeIds[i]);
+    if (n) nodes.push(n);
+  }
+  if (nodes.length < 2) throw new Error("Need at least 2 nodes");
+
+  var result;
+  switch (params.operation) {
+    case "UNION": result = figma.union(nodes, nodes[0].parent); break;
+    case "SUBTRACT": result = figma.subtract(nodes, nodes[0].parent); break;
+    case "INTERSECT": result = figma.intersect(nodes, nodes[0].parent); break;
+    case "EXCLUDE": result = figma.exclude(nodes, nodes[0].parent); break;
+    default: throw new Error("Invalid operation: " + params.operation);
+  }
+  if (params.name) result.name = params.name;
+  return { id: result.id, name: result.name, type: result.type };
+}
+
+async function setConstraints(params) {
+  var node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found");
+  if (params.horizontal) node.constraints = { horizontal: params.horizontal, vertical: node.constraints.vertical };
+  if (params.vertical) node.constraints = { horizontal: node.constraints.horizontal, vertical: params.vertical };
+  return { id: node.id, name: node.name, constraints: node.constraints };
+}
+
+async function setStrokeProperties(params) {
+  var node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found");
+  if (params.strokeCap !== undefined) node.strokeCap = params.strokeCap;
+  if (params.strokeJoin !== undefined) node.strokeJoin = params.strokeJoin;
+  if (params.strokeAlign !== undefined) node.strokeAlign = params.strokeAlign;
+  if (params.dashPattern !== undefined) node.dashPattern = params.dashPattern;
+  if (params.strokeWeight !== undefined) node.strokeWeight = params.strokeWeight;
+  return { id: node.id, name: node.name };
+}
+
+async function createComponent(params) {
+  if (params.fromNodeId) {
+    var srcNode = await figma.getNodeByIdAsync(params.fromNodeId);
+    if (!srcNode) throw new Error("Node not found");
+    var component = figma.createComponent();
+    component.name = params.name || srcNode.name;
+    component.x = srcNode.x;
+    component.y = srcNode.y;
+    component.resize(srcNode.width, srcNode.height);
+    if ("children" in srcNode) {
+      for (var i = 0; i < srcNode.children.length; i++) {
+        component.appendChild(srcNode.children[i].clone());
+      }
+    }
+    if ("fills" in srcNode) component.fills = JSON.parse(JSON.stringify(srcNode.fills));
+    if ("effects" in srcNode) component.effects = JSON.parse(JSON.stringify(srcNode.effects));
+    if ("cornerRadius" in srcNode && typeof srcNode.cornerRadius === "number") component.cornerRadius = srcNode.cornerRadius;
+    return { id: component.id, name: component.name, type: "COMPONENT" };
+  } else {
+    var comp = figma.createComponent();
+    comp.name = params.name || "Component";
+    comp.x = params.x || 0;
+    comp.y = params.y || 0;
+    comp.resize(params.width || 100, params.height || 100);
+    return { id: comp.id, name: comp.name, type: "COMPONENT" };
+  }
+}
+
+async function setMask(params) {
+  var node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found");
+  node.isMask = params.isMask !== false;
+  return { id: node.id, name: node.name, isMask: node.isMask };
+}
+
+async function setPluginData(params) {
+  var node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found");
+  if (params.value !== undefined) {
+    node.setPluginData(params.key, typeof params.value === "string" ? params.value : JSON.stringify(params.value));
+  }
+  var stored = node.getPluginData(params.key);
+  return { id: node.id, key: params.key, value: stored };
+}
+
+async function createPage(params) {
+  var page = figma.createPage();
+  page.name = params.name || "New Page";
+  if (params.setCurrent) {
+    figma.currentPage = page;
+  }
+  return { id: page.id, name: page.name };
+}
+
+async function setPerCornerRadius(params) {
+  var node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found");
+  if (params.topLeft !== undefined) node.topLeftRadius = params.topLeft;
+  if (params.topRight !== undefined) node.topRightRadius = params.topRight;
+  if (params.bottomRight !== undefined) node.bottomRightRadius = params.bottomRight;
+  if (params.bottomLeft !== undefined) node.bottomLeftRadius = params.bottomLeft;
+  return {
+    id: node.id, name: node.name,
+    topLeft: node.topLeftRadius, topRight: node.topRightRadius,
+    bottomRight: node.bottomRightRadius, bottomLeft: node.bottomLeftRadius
+  };
+}
+
+async function createStyle(params) {
+  var style;
+  if (params.type === "PAINT") {
+    style = figma.createPaintStyle();
+    style.name = params.name;
+    if (params.paints) style.paints = params.paints;
+  } else if (params.type === "TEXT") {
+    style = figma.createTextStyle();
+    style.name = params.name;
+    if (params.fontSize) style.fontSize = params.fontSize;
+    if (params.fontName) {
+      await figma.loadFontAsync(params.fontName);
+      style.fontName = params.fontName;
+    }
+  } else if (params.type === "EFFECT") {
+    style = figma.createEffectStyle();
+    style.name = params.name;
+    if (params.effects) style.effects = params.effects;
+  } else {
+    throw new Error("Invalid style type: " + params.type);
+  }
+  return { id: style.id, name: style.name, type: params.type };
+}
+
+async function manageVariables(params) {
+  if (params.action === "list") {
+    var variables = await figma.variables.getLocalVariablesAsync();
+    return variables.map(function(v) { return { id: v.id, name: v.name, resolvedType: v.resolvedType }; });
+  } else if (params.action === "create") {
+    var collections = await figma.variables.getLocalVariableCollectionsAsync();
+    var collection;
+    if (params.collectionId) {
+      collection = await figma.variables.getVariableCollectionByIdAsync(params.collectionId);
+    } else if (collections.length > 0) {
+      collection = collections[0];
+    } else {
+      collection = figma.variables.createVariableCollection(params.collectionName || "Design Tokens");
+    }
+    var variable = figma.variables.createVariable(params.name, collection, params.resolvedType || "COLOR");
+    if (params.value !== undefined) {
+      var modeId = collection.modes[0].modeId;
+      variable.setValueForMode(modeId, params.value);
+    }
+    return { id: variable.id, name: variable.name, collectionId: collection.id };
+  } else if (params.action === "bind") {
+    var node = await figma.getNodeByIdAsync(params.nodeId);
+    var variable = await figma.variables.getVariableByIdAsync(params.variableId);
+    if (!node || !variable) throw new Error("Node or variable not found");
+    node.setBoundVariable(params.field, variable);
+    return { id: node.id, variableId: variable.id, field: params.field };
+  } else {
+    throw new Error("Unknown action: " + params.action);
+  }
+}
+
+async function setViewport(params) {
+  if (params.zoom !== undefined) {
+    figma.viewport.zoom = params.zoom;
+  }
+  if (params.center) {
+    figma.viewport.center = { x: params.center.x, y: params.center.y };
+  }
+  if (params.scrollAndZoomIntoView && params.nodeIds) {
+    var nodes = [];
+    for (var i = 0; i < params.nodeIds.length; i++) {
+      var n = await figma.getNodeByIdAsync(params.nodeIds[i]);
+      if (n) nodes.push(n);
+    }
+    figma.viewport.scrollAndZoomIntoView(nodes);
+  }
+  return { zoom: figma.viewport.zoom, center: figma.viewport.center, bounds: figma.viewport.bounds };
+}
+
+async function managePages(params) {
+  if (params.action === "list") {
+    return figma.root.children.map(function(p) {
+      return { id: p.id, name: p.name, childCount: p.children.length };
+    });
+  } else if (params.action === "create") {
+    var page = figma.createPage();
+    page.name = params.name || "New Page";
+    if (params.setCurrent) figma.currentPage = page;
+    return { id: page.id, name: page.name };
+  } else if (params.action === "switch") {
+    var page = figma.root.children.find(function(p) { return p.id === params.pageId || p.name === params.pageName; });
+    if (!page) throw new Error("Page not found");
+    figma.currentPage = page;
+    return { id: page.id, name: page.name };
+  } else if (params.action === "rename") {
+    var page = figma.root.children.find(function(p) { return p.id === params.pageId; });
+    if (!page) throw new Error("Page not found");
+    page.name = params.name;
+    return { id: page.id, name: page.name };
+  } else if (params.action === "delete") {
+    var page = figma.root.children.find(function(p) { return p.id === params.pageId; });
+    if (!page) throw new Error("Page not found");
+    if (figma.root.children.length <= 1) throw new Error("Cannot delete last page");
+    page.remove();
+    return { deleted: true };
+  } else {
+    throw new Error("Unknown action: " + params.action);
+  }
+}
+
+async function setExportSettings(params) {
+  var node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found");
+  node.exportSettings = (params.settings || []).map(function(s) {
+    return {
+      format: s.format || "PNG",
+      suffix: s.suffix || "",
+      constraint: s.constraint || { type: "SCALE", value: 1 },
+    };
+  });
+  return { id: node.id, name: node.name, exportSettings: node.exportSettings };
+}
+
+async function setScrollBehavior(params) {
+  var node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found");
+  if (params.overflowDirection !== undefined) node.overflowDirection = params.overflowDirection;
+  if (params.clipsContent !== undefined) node.clipsContent = params.clipsContent;
+  return { id: node.id, name: node.name };
+}
+
+async function reparentNode(params) {
+  var node = await figma.getNodeByIdAsync(params.nodeId);
+  var newParent = await figma.getNodeByIdAsync(params.newParentId);
+  if (!node || !newParent) throw new Error("Node or parent not found");
+  if (!("appendChild" in newParent)) throw new Error("New parent cannot have children");
+  if (params.index !== undefined) {
+    newParent.insertChild(params.index, node);
+  } else {
+    newParent.appendChild(node);
+  }
+  return { id: node.id, name: node.name, parentId: newParent.id };
+}
+
+async function reorderNode(params) {
+  var node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node || !node.parent) throw new Error("Node not found or has no parent");
+  var parent = node.parent;
+  if (!("insertChild" in parent)) throw new Error("Parent does not support reordering");
+  var siblings = parent.children;
+  var currentIndex = siblings.indexOf(node);
+  var newIndex;
+  if (params.position === "front") newIndex = siblings.length - 1;
+  else if (params.position === "back") newIndex = 0;
+  else if (params.position === "forward") newIndex = Math.min(currentIndex + 1, siblings.length - 1);
+  else if (params.position === "backward") newIndex = Math.max(currentIndex - 1, 0);
+  else if (params.index !== undefined) newIndex = params.index;
+  else throw new Error("Specify position or index");
+  parent.insertChild(newIndex, node);
+  return { id: node.id, name: node.name, index: newIndex };
+}
+
+async function getPluginData(params) {
+  var node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found");
+  if (params.key) {
+    return { id: node.id, key: params.key, value: node.getPluginData(params.key) };
+  } else {
+    var keys = node.getPluginDataKeys();
+    var data = {};
+    for (var i = 0; i < keys.length; i++) {
+      data[keys[i]] = node.getPluginData(keys[i]);
+    }
+    return { id: node.id, data: data };
+  }
 }
