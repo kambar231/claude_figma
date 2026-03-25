@@ -479,6 +479,56 @@ server.tool(
   }
 );
 server.tool(
+  "set_fill_gradient",
+  "Set the fill of a node to a radial or linear gradient in Figma",
+  {
+    nodeId: z.string().describe("The ID of the node to modify"),
+    gradientType: z.enum(["GRADIENT_RADIAL", "GRADIENT_LINEAR"]).describe("Type of gradient"),
+    gradientStops: z.array(
+      z.object({
+        r: z.number().min(0).max(1).describe("Red (0-1)"),
+        g: z.number().min(0).max(1).describe("Green (0-1)"),
+        b: z.number().min(0).max(1).describe("Blue (0-1)"),
+        a: z.number().min(0).max(1).describe("Alpha (0-1)"),
+        position: z.number().min(0).max(1).describe("Stop position (0-1)")
+      })
+    ).describe("Gradient color stops"),
+    gradientHandlePositions: z.array(z.object({ x: z.number(), y: z.number() })).length(3).optional().describe(
+      "Three handle positions [center, x-axis end, y-axis end] in 0-1 space. Defaults to radial centered fill."
+    ),
+    opacity: z.number().min(0).max(1).optional().describe("Overall opacity (0-1), default 1")
+  },
+  async ({ nodeId, gradientType, gradientStops, gradientHandlePositions, opacity }) => {
+    try {
+      const result = await sendCommandToFigma("set_fill_gradient", {
+        nodeId,
+        gradientType,
+        gradientStops,
+        gradientHandlePositions,
+        opacity
+      });
+      const typedResult = result;
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Set ${gradientType} gradient fill on node "${typedResult.name}" with ${gradientStops.length} stops`
+          }
+        ]
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error setting gradient fill: ${error instanceof Error ? error.message : String(error)}`
+          }
+        ]
+      };
+    }
+  }
+);
+server.tool(
   "set_stroke_color",
   "Set the stroke color of a node in Figma",
   {
@@ -514,6 +564,228 @@ server.tool(
           }
         ]
       };
+    }
+  }
+);
+server.tool(
+  "set_effect",
+  "Set effects (drop shadow, inner shadow, blur) on a node in Figma",
+  {
+    nodeId: z.string().describe("The ID of the node to modify"),
+    effects: z.array(z.object({
+      type: z.enum(["DROP_SHADOW", "INNER_SHADOW", "LAYER_BLUR", "BACKGROUND_BLUR"]).describe("Effect type"),
+      color: z.object({
+        r: z.number().min(0).max(1),
+        g: z.number().min(0).max(1),
+        b: z.number().min(0).max(1),
+        a: z.number().min(0).max(1).optional()
+      }).optional().describe("Color for shadow effects"),
+      offset: z.object({ x: z.number(), y: z.number() }).optional().describe("Offset for shadow effects"),
+      radius: z.number().optional().describe("Blur radius"),
+      spread: z.number().optional().describe("Spread for shadow effects"),
+      visible: z.boolean().optional().describe("Whether effect is visible")
+    })).describe("Array of effects to apply")
+  },
+  async ({ nodeId, effects }) => {
+    try {
+      const result = await sendCommandToFigma("set_effect", { nodeId, effects });
+      return { content: [{ type: "text", text: `Set ${effects.length} effect(s) on node "${result.name}"` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "set_opacity",
+  "Set the opacity of a node in Figma (0-1)",
+  {
+    nodeId: z.string().describe("The ID of the node to modify"),
+    opacity: z.number().min(0).max(1).describe("Opacity value (0=transparent, 1=opaque)")
+  },
+  async ({ nodeId, opacity }) => {
+    try {
+      const result = await sendCommandToFigma("set_opacity", { nodeId, opacity });
+      return { content: [{ type: "text", text: `Set opacity to ${opacity} on "${result.name}"` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "set_image_fill",
+  "Fill a node with a base64-encoded image in Figma",
+  {
+    nodeId: z.string().describe("The ID of the node to fill with an image"),
+    imageData: z.string().describe("Base64-encoded PNG or JPG image data"),
+    scaleMode: z.enum(["FILL", "FIT", "CROP", "TILE"]).optional().describe("How the image scales"),
+    opacity: z.number().min(0).max(1).optional().describe("Image opacity")
+  },
+  async ({ nodeId, imageData, scaleMode, opacity }) => {
+    try {
+      const result = await sendCommandToFigma("set_image_fill", { nodeId, imageData, scaleMode, opacity });
+      return { content: [{ type: "text", text: `Set image fill on "${result.name}"` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "set_blend_mode",
+  "Set the blend mode of a node in Figma",
+  {
+    nodeId: z.string().describe("The ID of the node to modify"),
+    blendMode: z.enum(["NORMAL", "DARKEN", "MULTIPLY", "COLOR_BURN", "LIGHTEN", "SCREEN", "COLOR_DODGE", "OVERLAY", "SOFT_LIGHT", "HARD_LIGHT", "DIFFERENCE", "EXCLUSION", "HUE", "SATURATION", "COLOR", "LUMINOSITY"]).describe("Blend mode")
+  },
+  async ({ nodeId, blendMode }) => {
+    try {
+      const result = await sendCommandToFigma("set_blend_mode", { nodeId, blendMode });
+      return { content: [{ type: "text", text: `Set blend mode to ${blendMode} on "${result.name}"` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "create_ellipse",
+  "Create an ellipse/circle in Figma",
+  {
+    x: z.number().describe("X position"),
+    y: z.number().describe("Y position"),
+    width: z.number().positive().describe("Width"),
+    height: z.number().positive().describe("Height"),
+    name: z.string().optional().describe("Name for the ellipse"),
+    parentId: z.string().optional().describe("Parent node ID")
+  },
+  async ({ x, y, width, height, name, parentId }) => {
+    try {
+      const result = await sendCommandToFigma("create_ellipse", { x, y, width, height, name, parentId });
+      return { content: [{ type: "text", text: `Created ellipse "${result.name}" (${width}x${height})` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "create_vector",
+  "Create a vector shape from SVG path data in Figma (for icons, custom shapes, etc.)",
+  {
+    x: z.number().optional().describe("X position"),
+    y: z.number().optional().describe("Y position"),
+    width: z.number().positive().optional().describe("Width to resize vector to"),
+    height: z.number().positive().optional().describe("Height to resize vector to"),
+    name: z.string().optional().describe("Name for the vector"),
+    parentId: z.string().optional().describe("Parent node ID"),
+    paths: z.array(z.object({
+      data: z.string().describe("SVG path data string (e.g. 'M 0 0 L 10 10 L 20 0 Z')"),
+      windingRule: z.enum(["NONZERO", "EVENODD"]).optional().describe("Winding rule for the path")
+    })).describe("Array of vector paths with SVG path data")
+  },
+  async ({ x, y, width, height, name, parentId, paths }) => {
+    try {
+      const result = await sendCommandToFigma("create_vector", { x, y, width, height, name, parentId, paths });
+      return { content: [{ type: "text", text: `Created vector "${result.name}" (${result.width}x${result.height}) id=${result.id}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error creating vector: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "set_multiple_fills",
+  "Apply multiple layered fills (solid colors, gradients) to a single node in Figma",
+  {
+    nodeId: z.string().describe("The ID of the node to set fills on"),
+    fills: z.array(z.object({
+      type: z.enum(["SOLID", "GRADIENT_LINEAR", "GRADIENT_RADIAL"]).describe("Fill type"),
+      color: z.object({
+        r: z.number().min(0).max(1),
+        g: z.number().min(0).max(1),
+        b: z.number().min(0).max(1)
+      }).optional().describe("Color for SOLID fills (r,g,b in 0-1 range)"),
+      opacity: z.number().min(0).max(1).optional().describe("Fill opacity"),
+      visible: z.boolean().optional().describe("Whether fill is visible"),
+      blendMode: z.string().optional().describe("Blend mode (e.g. NORMAL, MULTIPLY)"),
+      gradientHandlePositions: z.array(z.object({
+        x: z.number(),
+        y: z.number()
+      })).optional().describe("Three gradient handle positions [start, end, width]"),
+      gradientStops: z.array(z.object({
+        position: z.number().min(0).max(1),
+        r: z.number().min(0).max(1),
+        g: z.number().min(0).max(1),
+        b: z.number().min(0).max(1),
+        a: z.number().min(0).max(1).optional()
+      })).optional().describe("Gradient color stops")
+    })).describe("Array of fills to apply")
+  },
+  async ({ nodeId, fills }) => {
+    try {
+      const result = await sendCommandToFigma("set_multiple_fills", { nodeId, fills });
+      return { content: [{ type: "text", text: `Set ${result.fillCount} fills on "${result.name}"` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error setting fills: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "set_multiple_effects",
+  "Apply multiple layered effects (drop shadow, inner shadow, blur) to a node in Figma simultaneously",
+  {
+    nodeId: z.string().describe("The ID of the node to apply effects to"),
+    effects: z.array(z.object({
+      type: z.enum(["DROP_SHADOW", "INNER_SHADOW", "LAYER_BLUR", "BACKGROUND_BLUR"]).describe("Effect type"),
+      color: z.object({
+        r: z.number().min(0).max(1),
+        g: z.number().min(0).max(1),
+        b: z.number().min(0).max(1),
+        a: z.number().min(0).max(1).optional()
+      }).optional().describe("Shadow color (for shadow effects)"),
+      offset: z.object({
+        x: z.number(),
+        y: z.number()
+      }).optional().describe("Shadow offset (for shadow effects)"),
+      radius: z.number().optional().describe("Blur radius"),
+      spread: z.number().optional().describe("Shadow spread (for shadow effects)"),
+      visible: z.boolean().optional().describe("Whether effect is visible"),
+      blendMode: z.string().optional().describe("Blend mode")
+    })).describe("Array of effects to apply")
+  },
+  async ({ nodeId, effects }) => {
+    try {
+      const result = await sendCommandToFigma("set_multiple_effects", { nodeId, effects });
+      return { content: [{ type: "text", text: `Set ${result.effectCount} effects on "${result.name}"` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error setting effects: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "group_nodes",
+  "Group multiple nodes together in Figma",
+  {
+    nodeIds: z.array(z.string()).min(2).describe("Array of node IDs to group (minimum 2)"),
+    name: z.string().optional().describe("Name for the group")
+  },
+  async ({ nodeIds, name }) => {
+    try {
+      const result = await sendCommandToFigma("group_nodes", { nodeIds, name });
+      return { content: [{ type: "text", text: `Created group "${result.name}" with ${result.childCount} children, id=${result.id}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error grouping nodes: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "flatten_node",
+  "Flatten a node (combine vector shapes into a single path) in Figma",
+  {
+    nodeId: z.string().describe("The ID of the node to flatten")
+  },
+  async ({ nodeId }) => {
+    try {
+      const result = await sendCommandToFigma("flatten_node", { nodeId });
+      return { content: [{ type: "text", text: `Flattened node to "${result.name}" id=${result.id}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error flattening node: ${error instanceof Error ? error.message : String(error)}` }] };
     }
   }
 );
@@ -2335,6 +2607,203 @@ function sendCommandToFigma(command, params = {}, timeoutMs = 3e4) {
     ws.send(JSON.stringify(request));
   });
 }
+server.tool(
+  "set_effect",
+  "Add effects (drop shadow, inner shadow, layer blur, background blur) to a node in Figma",
+  {
+    nodeId: z.string().describe("The ID of the node to apply effects to"),
+    effects: z.array(z.object({
+      type: z.enum(["DROP_SHADOW", "INNER_SHADOW", "LAYER_BLUR", "BACKGROUND_BLUR"]).describe("Effect type"),
+      color: z.object({
+        r: z.number().min(0).max(1).describe("Red component (0-1)"),
+        g: z.number().min(0).max(1).describe("Green component (0-1)"),
+        b: z.number().min(0).max(1).describe("Blue component (0-1)"),
+        a: z.number().min(0).max(1).optional().describe("Alpha component (0-1)")
+      }).optional().describe("Color for shadow effects"),
+      offset: z.object({
+        x: z.number().describe("X offset"),
+        y: z.number().describe("Y offset")
+      }).optional().describe("Offset for shadow effects"),
+      radius: z.number().optional().describe("Blur radius"),
+      spread: z.number().optional().describe("Spread for shadow effects"),
+      visible: z.boolean().optional().describe("Whether the effect is visible")
+    })).describe("Array of effects to apply")
+  },
+  async ({ nodeId, effects }) => {
+    try {
+      const result = await sendCommandToFigma("set_effect", { nodeId, effects });
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Set effects on node: ${JSON.stringify(result)}`
+          }
+        ]
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error setting effects: ${error instanceof Error ? error.message : String(error)}`
+          }
+        ]
+      };
+    }
+  }
+);
+server.tool(
+  "set_opacity",
+  "Set the opacity of a node in Figma",
+  {
+    nodeId: z.string().describe("The ID of the node to set opacity on"),
+    opacity: z.number().min(0).max(1).describe("Opacity value (0-1)")
+  },
+  async ({ nodeId, opacity }) => {
+    try {
+      const result = await sendCommandToFigma("set_opacity", { nodeId, opacity });
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Set opacity on node: ${JSON.stringify(result)}`
+          }
+        ]
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error setting opacity: ${error instanceof Error ? error.message : String(error)}`
+          }
+        ]
+      };
+    }
+  }
+);
+server.tool(
+  "set_image_fill",
+  "Fill a node with an image from base64 encoded data",
+  {
+    nodeId: z.string().describe("The ID of the node to fill with an image"),
+    imageData: z.string().describe("Base64 encoded image data (PNG or JPG)"),
+    scaleMode: z.enum(["FILL", "FIT", "CROP", "TILE"]).optional().describe("How the image scales within the node"),
+    opacity: z.number().min(0).max(1).optional().describe("Opacity of the image fill (0-1)")
+  },
+  async ({ nodeId, imageData, scaleMode, opacity }) => {
+    try {
+      const result = await sendCommandToFigma("set_image_fill", { nodeId, imageData, scaleMode, opacity });
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Set image fill on node: ${JSON.stringify(result)}`
+          }
+        ]
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error setting image fill: ${error instanceof Error ? error.message : String(error)}`
+          }
+        ]
+      };
+    }
+  }
+);
+server.tool(
+  "set_blend_mode",
+  "Set the blend mode of a node in Figma",
+  {
+    nodeId: z.string().describe("The ID of the node to set blend mode on"),
+    blendMode: z.enum([
+      "NORMAL",
+      "DARKEN",
+      "MULTIPLY",
+      "LINEAR_BURN",
+      "COLOR_BURN",
+      "LIGHTEN",
+      "SCREEN",
+      "LINEAR_DODGE",
+      "COLOR_DODGE",
+      "OVERLAY",
+      "SOFT_LIGHT",
+      "HARD_LIGHT",
+      "DIFFERENCE",
+      "EXCLUSION",
+      "HUE",
+      "SATURATION",
+      "COLOR",
+      "LUMINOSITY"
+    ]).describe("The blend mode to apply")
+  },
+  async ({ nodeId, blendMode }) => {
+    try {
+      const result = await sendCommandToFigma("set_blend_mode", { nodeId, blendMode });
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Set blend mode on node: ${JSON.stringify(result)}`
+          }
+        ]
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error setting blend mode: ${error instanceof Error ? error.message : String(error)}`
+          }
+        ]
+      };
+    }
+  }
+);
+server.tool(
+  "create_ellipse",
+  "Create a new ellipse (circle or oval) in Figma",
+  {
+    x: z.number().describe("X position"),
+    y: z.number().describe("Y position"),
+    width: z.number().describe("Width of the ellipse"),
+    height: z.number().describe("Height of the ellipse"),
+    name: z.string().optional().describe("Optional name for the ellipse"),
+    parentId: z.string().optional().describe("Optional parent node ID to append the ellipse to")
+  },
+  async ({ x, y, width, height, name, parentId }) => {
+    try {
+      const result = await sendCommandToFigma("create_ellipse", {
+        x,
+        y,
+        width,
+        height,
+        name: name || "Ellipse",
+        parentId
+      });
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Created ellipse "${JSON.stringify(result)}"`
+          }
+        ]
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error creating ellipse: ${error instanceof Error ? error.message : String(error)}`
+          }
+        ]
+      };
+    }
+  }
+);
 server.tool(
   "join_channel",
   "Join a specific channel to communicate with Figma",

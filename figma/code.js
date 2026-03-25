@@ -242,6 +242,26 @@ async function handleCommand(command, params) {
       return await setFocus(params);
     case "set_selections":
       return await setSelections(params);
+    case "set_effect":
+      return await setEffect(params);
+    case "set_opacity":
+      return await setOpacity(params);
+    case "set_image_fill":
+      return await setImageFill(params);
+    case "set_blend_mode":
+      return await setBlendMode(params);
+    case "create_ellipse":
+      return await createEllipse(params);
+    case "create_vector":
+      return await createVector(params);
+    case "set_multiple_fills":
+      return await setMultipleFills(params);
+    case "set_multiple_effects":
+      return await setMultipleEffects(params);
+    case "group_nodes":
+      return await groupNodes(params);
+    case "flatten_node":
+      return await flattenNode(params);
     default:
       throw new Error(`Unknown command: ${command}`);
   }
@@ -825,6 +845,7 @@ async function createText(params) {
     fontColor = { r: 0, g: 0, b: 0, a: 1 }, // Default to black
     name = "",
     parentId,
+    fontFamily,
   } = params || {};
 
   // Map common font weights to Figma font styles
@@ -858,14 +879,21 @@ async function createText(params) {
   textNode.y = y;
   textNode.name = name || text;
   try {
-    await figma.loadFontAsync({
-      family: "Inter",
-      style: getFontStyle(fontWeight),
-    });
-    textNode.fontName = { family: "Inter", style: getFontStyle(fontWeight) };
+    const family = fontFamily || "Inter";
+    const style = getFontStyle(fontWeight);
+    await figma.loadFontAsync({ family, style });
+    textNode.fontName = { family, style };
     textNode.fontSize = parseInt(fontSize);
   } catch (error) {
-    console.error("Error setting font size", error);
+    console.error("Error setting font", error);
+    // Fallback to Inter if custom font fails
+    try {
+      await figma.loadFontAsync({ family: "Inter", style: getFontStyle(fontWeight) });
+      textNode.fontName = { family: "Inter", style: getFontStyle(fontWeight) };
+      textNode.fontSize = parseInt(fontSize);
+    } catch (fallbackError) {
+      console.error("Fallback font error", fallbackError);
+    }
   }
   setCharacters(textNode, text);
 
@@ -4175,4 +4203,224 @@ async function setSelections(params) {
     notFoundIds: notFoundIds,
     message: `Selected ${nodes.length} nodes${notFoundIds.length > 0 ? ` (${notFoundIds.length} not found)` : ''}`
   };
+}
+
+// ══════════════════════════════════════════════════
+// Solution B: New capabilities
+// ══════════════════════════════════════════════════
+
+async function setEffect(params) {
+  const node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found: " + params.nodeId);
+
+  const effects = (params.effects || []).map(function(e) {
+    if (e.type === "DROP_SHADOW" || e.type === "INNER_SHADOW") {
+      return {
+        type: e.type,
+        color: { r: e.color.r, g: e.color.g, b: e.color.b, a: e.color.a !== undefined ? e.color.a : 0.25 },
+        offset: { x: e.offset ? e.offset.x : 0, y: e.offset ? e.offset.y : 2 },
+        radius: e.radius !== undefined ? e.radius : 4,
+        spread: e.spread !== undefined ? e.spread : 0,
+        visible: e.visible !== false,
+        blendMode: "NORMAL",
+      };
+    } else {
+      return {
+        type: e.type,
+        radius: e.radius !== undefined ? e.radius : 10,
+        visible: e.visible !== false,
+      };
+    }
+  });
+
+  node.effects = effects;
+  return { id: node.id, name: node.name, effectCount: effects.length };
+}
+
+async function setOpacity(params) {
+  const node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found: " + params.nodeId);
+  var val = parseFloat(params.opacity);
+  if (val < 0) val = 0;
+  if (val > 1) val = 1;
+  node.opacity = val;
+  return { id: node.id, name: node.name, opacity: node.opacity };
+}
+
+async function setImageFill(params) {
+  const node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found: " + params.nodeId);
+
+  // base64 decode without atob (Figma sandbox may lack it)
+  var b64 = params.imageData;
+  var lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  var len = b64.length;
+  var p = b64.indexOf("=");
+  var bufLen = p > 0 ? (len * 3 / 4) - (len - p) : (len * 3 / 4);
+  var bytes = new Uint8Array(Math.ceil(bufLen));
+  var j = 0;
+  for (var i2 = 0; i2 < len; i2 += 4) {
+    var e1 = lookup.indexOf(b64[i2]);
+    var e2 = lookup.indexOf(b64[i2 + 1]);
+    var e3 = b64[i2 + 2] === "=" ? 0 : lookup.indexOf(b64[i2 + 2]);
+    var e4 = b64[i2 + 3] === "=" ? 0 : lookup.indexOf(b64[i2 + 3]);
+    bytes[j++] = (e1 << 2) | (e2 >> 4);
+    if (b64[i2 + 2] !== "=") bytes[j++] = ((e2 & 15) << 4) | (e3 >> 2);
+    if (b64[i2 + 3] !== "=") bytes[j++] = ((e3 & 3) << 6) | e4;
+  }
+  var image = figma.createImage(bytes);
+
+  node.fills = [{
+    type: "IMAGE",
+    scaleMode: params.scaleMode || "FILL",
+    imageHash: image.hash,
+    opacity: params.opacity !== undefined ? params.opacity : 1,
+  }];
+
+  return { id: node.id, name: node.name, imageHash: image.hash };
+}
+
+async function setBlendMode(params) {
+  const node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found: " + params.nodeId);
+  node.blendMode = params.blendMode;
+  return { id: node.id, name: node.name, blendMode: node.blendMode };
+}
+
+async function createEllipse(params) {
+  var ellipse = figma.createEllipse();
+  ellipse.x = params.x;
+  ellipse.y = params.y;
+  ellipse.resize(params.width, params.height);
+  if (params.name) ellipse.name = params.name;
+
+  if (params.parentId) {
+    var parent = await figma.getNodeByIdAsync(params.parentId);
+    if (parent && "appendChild" in parent) parent.appendChild(ellipse);
+  }
+
+  return { id: ellipse.id, name: ellipse.name, x: ellipse.x, y: ellipse.y, width: ellipse.width, height: ellipse.height };
+}
+
+async function createVector(params) {
+  var vector = figma.createVector();
+  vector.x = params.x || 0;
+  vector.y = params.y || 0;
+  if (params.name) vector.name = params.name;
+
+  // Set the vector path data
+  if (params.paths) {
+    vector.vectorPaths = params.paths.map(function(p) {
+      return {
+        windingRule: p.windingRule || "NONZERO",
+        data: p.data,
+      };
+    });
+  }
+
+  if (params.width && params.height) {
+    vector.resize(params.width, params.height);
+  }
+
+  if (params.parentId) {
+    var parent = await figma.getNodeByIdAsync(params.parentId);
+    if (parent && "appendChild" in parent) parent.appendChild(vector);
+  }
+
+  return { id: vector.id, name: vector.name, x: vector.x, y: vector.y, width: vector.width, height: vector.height };
+}
+
+async function setMultipleFills(params) {
+  var node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found: " + params.nodeId);
+  if (!("fills" in node)) throw new Error("Node does not support fills");
+
+  var fills = params.fills.map(function(f) {
+    if (f.type === "SOLID") {
+      return {
+        type: "SOLID",
+        color: { r: f.color.r, g: f.color.g, b: f.color.b },
+        opacity: f.opacity !== undefined ? f.opacity : 1,
+        visible: f.visible !== false,
+        blendMode: f.blendMode || "NORMAL",
+      };
+    } else if (f.type === "GRADIENT_RADIAL" || f.type === "GRADIENT_LINEAR") {
+      var handles = f.gradientHandlePositions || [
+        { x: 0.5, y: 0.5 }, { x: 1, y: 0.5 }, { x: 0.5, y: 1 }
+      ];
+      var p0 = handles[0];
+      var p1 = handles[1];
+      var p2 = handles[2];
+      return {
+        type: f.type,
+        gradientTransform: [
+          [p1.x - p0.x, p2.x - p0.x, p0.x],
+          [p1.y - p0.y, p2.y - p0.y, p0.y],
+        ],
+        gradientStops: f.gradientStops.map(function(s) {
+          return {
+            position: s.position,
+            color: { r: s.r, g: s.g, b: s.b, a: s.a !== undefined ? s.a : 1 },
+          };
+        }),
+        opacity: f.opacity !== undefined ? f.opacity : 1,
+        visible: f.visible !== false,
+        blendMode: f.blendMode || "NORMAL",
+      };
+    }
+    return f;
+  });
+
+  node.fills = fills;
+  return { id: node.id, name: node.name, fillCount: fills.length };
+}
+
+async function setMultipleEffects(params) {
+  var node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found: " + params.nodeId);
+
+  var effects = params.effects.map(function(e) {
+    if (e.type === "DROP_SHADOW" || e.type === "INNER_SHADOW") {
+      return {
+        type: e.type,
+        color: { r: e.color.r, g: e.color.g, b: e.color.b, a: e.color.a !== undefined ? e.color.a : 0.25 },
+        offset: { x: e.offset ? e.offset.x : 0, y: e.offset ? e.offset.y : 2 },
+        radius: e.radius !== undefined ? e.radius : 4,
+        spread: e.spread !== undefined ? e.spread : 0,
+        visible: e.visible !== false,
+        blendMode: e.blendMode || "NORMAL",
+      };
+    } else {
+      return {
+        type: e.type,
+        radius: e.radius !== undefined ? e.radius : 10,
+        visible: e.visible !== false,
+      };
+    }
+  });
+
+  node.effects = effects;
+  return { id: node.id, name: node.name, effectCount: effects.length };
+}
+
+async function groupNodes(params) {
+  var nodeIds = params.nodeIds || [];
+  var nodes = [];
+  for (var i = 0; i < nodeIds.length; i++) {
+    var n = await figma.getNodeByIdAsync(nodeIds[i]);
+    if (n) nodes.push(n);
+  }
+  if (nodes.length < 2) throw new Error("Need at least 2 nodes to group");
+
+  var group = figma.group(nodes, nodes[0].parent);
+  if (params.name) group.name = params.name;
+
+  return { id: group.id, name: group.name, childCount: group.children.length };
+}
+
+async function flattenNode(params) {
+  var node = await figma.getNodeByIdAsync(params.nodeId);
+  if (!node) throw new Error("Node not found: " + params.nodeId);
+  var flat = figma.flatten([node]);
+  return { id: flat.id, name: flat.name };
 }
