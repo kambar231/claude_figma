@@ -68,3 +68,39 @@ You can also add it manually for Claude Code via the CLI:
 ```bash
 claude mcp add TalkToFigma -- bunx cursor-talk-to-figma-mcp@latest
 ```
+
+## Belo App Integration
+
+This repo also contains a bidirectional Flutter↔Figma workflow for the Belo messaging app.
+
+### Belo App (Flutter)
+Located at `balo/` (git submodule). The dev branch (`origin/dev`) has the latest code.
+- Frontend: `balo/frontend/messaging_app/`
+- Key screens: Home (orbital bubbles), Chat (DM + group), Flow, Pops
+
+### Skills & Agents (`.claude/`)
+Project-specific Claude Code skills for Flutter↔Figma workflow:
+- `.claude/skills/flutter-to-figma.md` — Full pipeline for recreating Flutter screens in Figma
+- `.claude/skills/figma-component-builder.md` — Build reusable UI components (glass ball, eclipse avatar, nav bar)
+- `.claude/skills/emulator-screenshot.md` — ADB screenshot capture and comparison
+- `.claude/skills/design-token-extractor.md` — Extract colors/fonts/gradients from Dart code
+- `.claude/agents/figma-designer.md` — Designer agent (code → Figma)
+- `.claude/agents/figma-auditor.md` — Auditor agent (emulator screenshot verification)
+- `.claude/rules/belo-figma.md` — Project-specific rules (no bubbles, correct fonts, etc.)
+
+### Utility Scripts
+- `scripts/figma-cmd.js` — Generic Figma command runner via WebSocket
+- `scripts/extract-layout.js` — ADB UI hierarchy extractor (exact element positions)
+- `scripts/flutter-inspect.js` — Flutter VM service inspector
+- `scripts/icon-paths.json` — Material Design SVG paths (14 icons)
+- `scripts/set-avatar.js` — Helper for base64 image fills
+
+### Design Tokens
+Run `cd balo/frontend/messaging_app && dart run test/golden/extract_design_tokens.dart` to extract all design tokens to `experiments/design-tokens.json`.
+
+### Android Emulator
+- Flutter SDK: `C:\Users\kmangibayev\flutter\`
+- Android SDK: `C:\Users\kmangibayev\AppData\Local\Android\Sdk\`
+- Emulator: Pixel 9, API 35
+- Launch: `emulator -avd Pixel_9 -no-audio`
+- Run app: `cd balo/frontend/messaging_app && flutter run -d emulator-5554`
