@@ -1,0 +1,429 @@
+{
+  "device": {
+    "physicalWidth": 1080,
+    "physicalHeight": 2424,
+    "logicalWidth": 411,
+    "logicalHeight": 923,
+    "width": 411,
+    "height": 923,
+    "density": 2.63,
+    "densityDpi": 420
+  },
+  "screenshot": "experiments/emulator-layout.png",
+  "capturedAt": "2026-03-25T00:20:18.833Z",
+  "elementCount": 20,
+  "flutterLimited": false,
+  "flutterInfo": {
+    "relevantLines": [
+      "            io.flutter.embedding.android.FlutterView{12d7ca6 VFE...... ........ 0,0-1080,2424 #1 aid=1073741824}\r",
+      "              io.flutter.embedding.android.FlutterSurfaceView{786d8ec V.E...... ........ 0,0-1080,2424}\r",
+      "      Message 0: { when=+1s718ms callback=io.flutter.plugins.camerax.CameraXLibraryPigeonInstanceManager$$ExternalSyntheticLambda0 target=android.os.Handler }\r",
+      "      Message 1: { when=+1s967ms callback=io.flutter.plugins.camerax.CameraXLibraryPigeonInstanceManager$$ExternalSyntheticLambda0 target=android.os.Handler }\r"
+    ]
+  },
+  "elements": [
+    {
+      "type": "android.widget.FrameLayout",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 411,
+        "height": 923
+      },
+      "boundsRaw": {
+        "left": 0,
+        "top": 0,
+        "right": 1080,
+        "bottom": 2424
+      },
+      "package": "com.balo.app",
+      "clickable": false,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "type": "android.widget.LinearLayout",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 411,
+        "height": 923
+      },
+      "boundsRaw": {
+        "left": 0,
+        "top": 0,
+        "right": 1080,
+        "bottom": 2424
+      },
+      "package": "com.balo.app",
+      "clickable": false,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "id": "android:id/content",
+      "type": "android.widget.FrameLayout",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 411,
+        "height": 923
+      },
+      "boundsRaw": {
+        "left": 0,
+        "top": 0,
+        "right": 1080,
+        "bottom": 2424
+      },
+      "package": "com.balo.app",
+      "clickable": false,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "type": "android.widget.FrameLayout",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 411,
+        "height": 923
+      },
+      "boundsRaw": {
+        "left": 0,
+        "top": 0,
+        "right": 1080,
+        "bottom": 2424
+      },
+      "package": "com.balo.app",
+      "clickable": false,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "type": "android.view.View",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 411,
+        "height": 923
+      },
+      "boundsRaw": {
+        "left": 0,
+        "top": 0,
+        "right": 1080,
+        "bottom": 2424
+      },
+      "package": "com.balo.app",
+      "clickable": false,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "type": "android.view.View",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 411,
+        "height": 923
+      },
+      "boundsRaw": {
+        "left": 0,
+        "top": 0,
+        "right": 1080,
+        "bottom": 2424
+      },
+      "package": "com.balo.app",
+      "clickable": false,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "type": "android.view.View",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 411,
+        "height": 923
+      },
+      "boundsRaw": {
+        "left": 0,
+        "top": 0,
+        "right": 1080,
+        "bottom": 2424
+      },
+      "package": "com.balo.app",
+      "clickable": false,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "type": "android.widget.ImageView",
+      "bounds": {
+        "x": 161,
+        "y": 54,
+        "width": 89,
+        "height": 89
+      },
+      "boundsRaw": {
+        "left": 423,
+        "top": 142,
+        "right": 657,
+        "bottom": 376
+      },
+      "description": "Saeed Sharifi",
+      "package": "com.balo.app",
+      "clickable": true,
+      "enabled": true,
+      "focused": false,
+      "scrollable": true
+    },
+    {
+      "type": "android.view.View",
+      "bounds": {
+        "x": 89,
+        "y": 72,
+        "width": 59,
+        "height": 59
+      },
+      "boundsRaw": {
+        "left": 233,
+        "top": 190,
+        "right": 389,
+        "bottom": 346
+      },
+      "package": "com.balo.app",
+      "clickable": true,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "type": "android.view.View",
+      "bounds": {
+        "x": 263,
+        "y": 72,
+        "width": 59,
+        "height": 59
+      },
+      "boundsRaw": {
+        "left": 691,
+        "top": 190,
+        "right": 847,
+        "bottom": 346
+      },
+      "package": "com.balo.app",
+      "clickable": true,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "type": "android.widget.Button",
+      "bounds": {
+        "x": 8,
+        "y": 76,
+        "width": 48,
+        "height": 48
+      },
+      "boundsRaw": {
+        "left": 21,
+        "top": 199,
+        "right": 147,
+        "bottom": 325
+      },
+      "package": "com.balo.app",
+      "clickable": true,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "type": "android.widget.Button",
+      "bounds": {
+        "x": 355,
+        "y": 76,
+        "width": 48,
+        "height": 48
+      },
+      "boundsRaw": {
+        "left": 933,
+        "top": 199,
+        "right": 1059,
+        "bottom": 325
+      },
+      "package": "com.balo.app",
+      "clickable": true,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "type": "android.view.View",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 411,
+        "height": 813
+      },
+      "boundsRaw": {
+        "left": 0,
+        "top": 0,
+        "right": 1080,
+        "bottom": 2134
+      },
+      "package": "com.balo.app",
+      "clickable": true,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "type": "android.view.View",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 411,
+        "height": 813
+      },
+      "boundsRaw": {
+        "left": 0,
+        "top": 0,
+        "right": 1080,
+        "bottom": 2134
+      },
+      "package": "com.balo.app",
+      "clickable": false,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "type": "android.view.View",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 411,
+        "height": 813
+      },
+      "boundsRaw": {
+        "left": 0,
+        "top": 0,
+        "right": 1080,
+        "bottom": 2134
+      },
+      "package": "com.balo.app",
+      "clickable": false,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "type": "android.view.View",
+      "bounds": {
+        "x": 16,
+        "y": 670,
+        "width": 379,
+        "height": 127
+      },
+      "boundsRaw": {
+        "left": 42,
+        "top": 1759,
+        "right": 1038,
+        "bottom": 2092
+      },
+      "description": "17/3/2026&#10;H&#10;15:17",
+      "package": "com.balo.app",
+      "clickable": false,
+      "enabled": true,
+      "focused": false,
+      "scrollable": true
+    },
+    {
+      "type": "android.view.View",
+      "bounds": {
+        "x": 12,
+        "y": 834,
+        "width": 44,
+        "height": 44
+      },
+      "boundsRaw": {
+        "left": 32,
+        "top": 2190,
+        "right": 147,
+        "bottom": 2306
+      },
+      "package": "com.balo.app",
+      "clickable": true,
+      "enabled": true,
+      "focused": false,
+      "scrollable": true
+    },
+    {
+      "type": "android.widget.ImageView",
+      "bounds": {
+        "x": 66,
+        "y": 846,
+        "width": 45,
+        "height": 20
+      },
+      "boundsRaw": {
+        "left": 173,
+        "top": 2221,
+        "right": 290,
+        "bottom": 2273
+      },
+      "package": "com.balo.app",
+      "clickable": false,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    },
+    {
+      "type": "android.widget.EditText",
+      "bounds": {
+        "x": 66,
+        "y": 826,
+        "width": 258,
+        "height": 60
+      },
+      "boundsRaw": {
+        "left": 173,
+        "top": 2169,
+        "right": 849,
+        "bottom": 2327
+      },
+      "package": "com.balo.app",
+      "clickable": true,
+      "enabled": true,
+      "focused": false,
+      "scrollable": true
+    },
+    {
+      "type": "android.view.View",
+      "bounds": {
+        "x": 333,
+        "y": 824,
+        "width": 66,
+        "height": 66
+      },
+      "boundsRaw": {
+        "left": 875,
+        "top": 2162,
+        "right": 1049,
+        "bottom": 2335
+      },
+      "package": "com.balo.app",
+      "clickable": true,
+      "enabled": true,
+      "focused": false,
+      "scrollable": false
+    }
+  ]
+}

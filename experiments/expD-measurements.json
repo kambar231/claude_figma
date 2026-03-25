@@ -1,0 +1,169 @@
+{
+  "phone": {
+    "x": 0,
+    "y": 0,
+    "width": 393,
+    "height": 852
+  },
+  "statusBar": {
+    "x": 0,
+    "y": 0,
+    "width": 393,
+    "height": 59,
+    "text": "9:41\n    \n    \n      ◀\n      ▬\n      🔋"
+  },
+  "header": {
+    "x": 0,
+    "y": 59,
+    "width": 393,
+    "height": 120,
+    "text": "E\n          \n        \n      \n      Elena"
+  },
+  "backBtn": {
+    "x": 8,
+    "y": 71,
+    "width": 48,
+    "height": 48,
+    "text": ""
+  },
+  "audioCallBtn": {
+    "x": 110,
+    "y": 66,
+    "width": 59,
+    "height": 59,
+    "text": ""
+  },
+  "videoCallBtn": {
+    "x": 224,
+    "y": 66,
+    "width": 59,
+    "height": 59,
+    "text": ""
+  },
+  "stackBtn": {
+    "x": 337,
+    "y": 71,
+    "width": 48,
+    "height": 48,
+    "text": ""
+  },
+  "headerCenter": {
+    "x": 152,
+    "y": 59,
+    "width": 89,
+    "height": 96,
+    "text": "E\n          \n        \n      \n      Elena"
+  },
+  "avatarImg": {
+    "x": 195,
+    "y": 77,
+    "width": 46,
+    "height": 54,
+    "text": "E"
+  },
+  "headerName": {
+    "x": 172,
+    "y": 134,
+    "width": 48,
+    "height": 21,
+    "text": "Elena"
+  },
+  "messagesArea": {
+    "x": 0,
+    "y": 179,
+    "width": 393,
+    "height": 580,
+    "text": "Today\n\n    \n    \n      \n        Hey, how are you doing? 😊\n "
+  },
+  "msg1": {
+    "x": 16,
+    "y": 226,
+    "width": 361,
+    "height": 55,
+    "text": "Hey, how are you doing? 😊\n        \n          10:30"
+  },
+  "msg2": {
+    "x": 16,
+    "y": 281,
+    "width": 361,
+    "height": 71,
+    "text": "I'm great! Just finished that project we discussed last week"
+  },
+  "msg3": {
+    "x": 16,
+    "y": 352,
+    "width": 361,
+    "height": 50,
+    "text": "It turned out really well!\n        \n          10:31"
+  },
+  "msg4": {
+    "x": 16,
+    "y": 402,
+    "width": 361,
+    "height": 76,
+    "text": "That's amazing! Can you share some screenshots?\n        \n   "
+  },
+  "msg5": {
+    "x": 16,
+    "y": 478,
+    "width": 361,
+    "height": 97,
+    "text": "Sure! Let me send them over. The design system is looking re"
+  },
+  "msg6": {
+    "x": 16,
+    "y": 575,
+    "width": 361,
+    "height": 50,
+    "text": "I love the purple gradient!\n        \n          10:35"
+  },
+  "msg7": {
+    "x": 16,
+    "y": 625,
+    "width": 361,
+    "height": 50,
+    "text": "The glass effects are so elegant ✨\n        \n          10:35"
+  },
+  "msg8": {
+    "x": 16,
+    "y": 675,
+    "width": 361,
+    "height": 76,
+    "text": "Thanks! The cosmic theme really ties it all together\n       "
+  },
+  "msg9": {
+    "x": 16,
+    "y": 751,
+    "width": 361,
+    "height": 76,
+    "text": "Can't wait to see the final version! When do you think it'll"
+  },
+  "inputArea": {
+    "x": 0,
+    "y": 759,
+    "width": 393,
+    "height": 93,
+    "text": "belo"
+  },
+  "glassBall": {
+    "x": 12,
+    "y": 770,
+    "width": 72,
+    "height": 72,
+    "text": ""
+  },
+  "textField": {
+    "x": 94,
+    "y": 778,
+    "width": 211,
+    "height": 56,
+    "text": "belo"
+  },
+  "voiceBtn": {
+    "x": 315,
+    "y": 773,
+    "width": 66,
+    "height": 66,
+    "text": ""
+  }
+}

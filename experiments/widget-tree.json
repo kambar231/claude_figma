@@ -1,0 +1,2310 @@
+{
+  "generatedAt": "2026-03-24T17:46:35.682834",
+  "description": "DM chat screen widget tree — visual properties dump",
+  "widgetCount": 320,
+  "screenSize": {
+    "width": 393,
+    "height": 852
+  },
+  "theme": "dark",
+  "widgets": [
+    {
+      "type": "_ViewScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_PipelineOwnerScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_MediaQueryFromView",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "MediaQuery",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "FocusTraversalGroup",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Focus",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_FocusInheritedScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_FocusScopeWithExternalFocusNode",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_FocusInheritedScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "MaterialApp",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "ScrollConfiguration",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "HeroControllerScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "WidgetsApp",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "RootRestorationScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "UnmanagedRestorationScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "RestorationScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "UnmanagedRestorationScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "SharedAppData",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_SharedAppModel",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "NotificationListener<NavigationNotification>",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Shortcuts",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Focus",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_FocusInheritedScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Semantics",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "DefaultTextEditingShortcuts",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Shortcuts",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Focus",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_FocusInheritedScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Semantics",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Actions",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_ActionsScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "FocusTraversalGroup",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Focus",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_FocusInheritedScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "TapRegionSurface",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "ShortcutRegistrar",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_ShortcutRegistrarScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Shortcuts",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Focus",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_FocusInheritedScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Semantics",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "ListenableBuilder",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Localizations",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Semantics",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_LocalizationsScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Directionality",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Title",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Focus",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_FocusInheritedScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Semantics",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "ValueListenableBuilder<bool>",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "DefaultTextStyle",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Builder",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "AnimatedTheme",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Theme",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_InheritedTheme",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "CupertinoTheme",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "InheritedCupertinoTheme",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "IconTheme",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "IconTheme",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "DefaultSelectionStyle",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "ScaffoldMessenger",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_ScaffoldMessengerScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "DefaultSelectionStyle",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "FocusScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Semantics",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_FocusInheritedScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Navigator",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "HeroControllerScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "NotificationListener<NavigationNotification>",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Listener",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "AbsorbPointer",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "FocusTraversalGroup",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Focus",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_FocusInheritedScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Focus",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_FocusInheritedScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "UnmanagedRestorationScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Overlay",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_Theater",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_OverlayEntryWidget",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "TickerMode",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_EffectiveTickerMode",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_RenderTheaterMarker",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Builder",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "IgnorePointer",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "ModalBarrier",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "BlockSemantics",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "ExcludeSemantics",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_ModalBarrierGestureDetector",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "RawGestureDetector",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_GestureSemantics",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Listener",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Semantics",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "MouseRegion",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "ConstrainedBox",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_OverlayEntryWidget",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "TickerMode",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_EffectiveTickerMode",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_RenderTheaterMarker",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Builder",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Semantics",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_ModalScope<dynamic>",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "AnimatedBuilder",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "RestorationScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "UnmanagedRestorationScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_ModalScopeStatus",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Offstage",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "PageStorage",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Builder",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Actions",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_ActionsScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "PrimaryScrollController",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_FocusScopeWithExternalFocusNode",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Semantics",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_FocusInheritedScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "RepaintBoundary",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "ListenableBuilder",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_PageTransitionsThemeTransitions<dynamic>",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_PredictiveBackGestureDetector",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_FadeForwardsPageTransition",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "DualTransitionBuilder",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "FadeTransition",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "SlideTransition",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "FractionalTranslation",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "IgnorePointer",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "FadeTransition",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "SlideTransition",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "FractionalTranslation",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "ColoredBox",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "DualTransitionBuilder",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "FadeTransition",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "SlideTransition",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "FractionalTranslation",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "FadeTransition",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "SlideTransition",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "FractionalTranslation",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "ListenableBuilder",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "IgnorePointer",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "RepaintBoundary",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Builder",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Semantics",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Scaffold",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_ScaffoldScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "ScrollNotificationObserver",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "NotificationListener<ScrollMetricsNotification>",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "NotificationListener<ScrollNotification>",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_ScrollNotificationObserverScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Material",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "AnimatedPhysicalModel",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "PhysicalModel",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "NotificationListener<LayoutChangedNotification>",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_InkFeatures",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "AnimatedDefaultTextStyle",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "DefaultTextStyle",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "AnimatedBuilder",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Actions",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_ActionsScope",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "CustomMultiChildLayout",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "LayoutId",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "MediaQuery",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "_BodyBuilder",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "KeyedSubtree",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Container",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0,
+      "hasGradient": true
+    },
+    {
+      "type": "DecoratedBox",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Padding",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "Column",
+      "x": 0.0,
+      "y": 0.0,
+      "w": 393.0,
+      "h": 852.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 196.5,
+      "y": 0.0,
+      "w": 0.0,
+      "h": 44.0
+    },
+    {
+      "type": "Padding",
+      "x": 0.0,
+      "y": 44.0,
+      "w": 393.0,
+      "h": 56.0
+    },
+    {
+      "type": "Row",
+      "x": 8.0,
+      "y": 52.0,
+      "w": 377.0,
+      "h": 40.0
+    },
+    {
+      "type": "Icon",
+      "x": 8.0,
+      "y": 62.0,
+      "w": 20.0,
+      "h": 20.0,
+      "iconSize": 20.0,
+      "color": "#d4b8ff"
+    },
+    {
+      "type": "Semantics",
+      "x": 8.0,
+      "y": 62.0,
+      "w": 20.0,
+      "h": 20.0
+    },
+    {
+      "type": "ExcludeSemantics",
+      "x": 8.0,
+      "y": 62.0,
+      "w": 20.0,
+      "h": 20.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 8.0,
+      "y": 62.0,
+      "w": 20.0,
+      "h": 20.0
+    },
+    {
+      "type": "Center",
+      "x": 8.0,
+      "y": 62.0,
+      "w": 20.0,
+      "h": 20.0
+    },
+    {
+      "type": "RichText",
+      "x": 8.0,
+      "y": 62.0,
+      "w": 20.0,
+      "h": 20.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 28.0,
+      "y": 72.0,
+      "w": 8.0,
+      "h": 0.0
+    },
+    {
+      "type": "Container",
+      "x": 36.0,
+      "y": 54.0,
+      "w": 36.0,
+      "h": 36.0,
+      "bgColor": "#ba82ed"
+    },
+    {
+      "type": "ConstrainedBox",
+      "x": 36.0,
+      "y": 54.0,
+      "w": 36.0,
+      "h": 36.0
+    },
+    {
+      "type": "DecoratedBox",
+      "x": 36.0,
+      "y": 54.0,
+      "w": 36.0,
+      "h": 36.0
+    },
+    {
+      "type": "Padding",
+      "x": 36.0,
+      "y": 54.0,
+      "w": 36.0,
+      "h": 36.0
+    },
+    {
+      "type": "Center",
+      "x": 36.0,
+      "y": 54.0,
+      "w": 36.0,
+      "h": 36.0
+    },
+    {
+      "type": "Text",
+      "x": 45.875,
+      "y": 60.5,
+      "w": 16.25,
+      "h": 23.0,
+      "text": "S",
+      "fontSize": 16.0,
+      "fontWeight": "FontWeight.w600",
+      "color": "#ffffff"
+    },
+    {
+      "type": "RichText",
+      "x": 45.875,
+      "y": 60.5,
+      "w": 16.25,
+      "h": 23.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 72.0,
+      "y": 72.0,
+      "w": 10.0,
+      "h": 0.0
+    },
+    {
+      "type": "Expanded",
+      "x": 82.0,
+      "y": 52.0,
+      "w": 279.0,
+      "h": 40.0
+    },
+    {
+      "type": "Column",
+      "x": 82.0,
+      "y": 52.0,
+      "w": 279.0,
+      "h": 40.0
+    },
+    {
+      "type": "Text",
+      "x": 82.0,
+      "y": 52.0,
+      "w": 211.25,
+      "h": 23.0,
+      "text": "Saeed Sharifi",
+      "fontSize": 16.0,
+      "fontWeight": "FontWeight.w600",
+      "color": "#f0f6fc"
+    },
+    {
+      "type": "RichText",
+      "x": 82.0,
+      "y": 52.0,
+      "w": 211.25,
+      "h": 23.0
+    },
+    {
+      "type": "Text",
+      "x": 82.0,
+      "y": 75.0,
+      "w": 73.5,
+      "h": 17.0,
+      "text": "Online",
+      "fontSize": 12.0,
+      "fontWeight": null,
+      "color": "#5a9e7a"
+    },
+    {
+      "type": "RichText",
+      "x": 82.0,
+      "y": 75.0,
+      "w": 73.5,
+      "h": 17.0
+    },
+    {
+      "type": "Icon",
+      "x": 361.0,
+      "y": 60.0,
+      "w": 24.0,
+      "h": 24.0,
+      "iconSize": 24.0,
+      "color": "#d4b8ff"
+    },
+    {
+      "type": "Semantics",
+      "x": 361.0,
+      "y": 60.0,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "ExcludeSemantics",
+      "x": 361.0,
+      "y": 60.0,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 361.0,
+      "y": 60.0,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "Center",
+      "x": 361.0,
+      "y": 60.0,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "RichText",
+      "x": 361.0,
+      "y": 60.0,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "Expanded",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "ListView",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "PrimaryScrollController",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "Scrollable",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "StretchingOverscrollIndicator",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "NotificationListener<ScrollNotification>",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "AnimatedBuilder",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "ClipRect",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "StretchEffect",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "Transform",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "NotificationListener<ScrollMetricsNotification>",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "_ScrollSemantics",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "_ScrollableScope",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "Listener",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "RawGestureDetector",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "_GestureSemantics",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "Listener",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "Semantics",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "IgnorePointer",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "Viewport",
+      "x": 0.0,
+      "y": 100.0,
+      "w": 393.0,
+      "h": 661.0
+    },
+    {
+      "type": "KeyedSubtree",
+      "x": 12.0,
+      "y": 108.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "AutomaticKeepAlive",
+      "x": 12.0,
+      "y": 108.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "KeepAlive",
+      "x": 12.0,
+      "y": 108.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "NotificationListener<KeepAliveNotification>",
+      "x": 12.0,
+      "y": 108.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "_SelectionKeepAlive",
+      "x": 12.0,
+      "y": 108.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "IndexedSemantics",
+      "x": 12.0,
+      "y": 108.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "RepaintBoundary",
+      "x": 12.0,
+      "y": 108.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "Align",
+      "x": 12.0,
+      "y": 108.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "Container",
+      "x": 12.0,
+      "y": 108.0,
+      "w": 280.0,
+      "h": 100.0,
+      "bgColor": "#2a1545",
+      "borderRadius": 18.0
+    },
+    {
+      "type": "ConstrainedBox",
+      "x": 12.0,
+      "y": 108.0,
+      "w": 280.0,
+      "h": 100.0
+    },
+    {
+      "type": "DecoratedBox",
+      "x": 12.0,
+      "y": 108.0,
+      "w": 280.0,
+      "h": 100.0
+    },
+    {
+      "type": "Padding",
+      "x": 12.0,
+      "y": 108.0,
+      "w": 280.0,
+      "h": 100.0
+    },
+    {
+      "type": "Column",
+      "x": 26.0,
+      "y": 118.0,
+      "w": 252.0,
+      "h": 80.0
+    },
+    {
+      "type": "Text",
+      "x": 26.0,
+      "y": 118.0,
+      "w": 252.0,
+      "h": 60.0,
+      "text": "Hey, how's the design coming along?",
+      "fontSize": 15.0,
+      "fontWeight": "FontWeight.w400",
+      "color": "#f0f6fc"
+    },
+    {
+      "type": "RichText",
+      "x": 26.0,
+      "y": 118.0,
+      "w": 252.0,
+      "h": 60.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 278.0,
+      "y": 178.0,
+      "w": 0.0,
+      "h": 4.0
+    },
+    {
+      "type": "Text",
+      "x": 199.25,
+      "y": 182.0,
+      "w": 78.75,
+      "h": 16.0,
+      "text": "2:20 PM",
+      "fontSize": 11.0,
+      "fontWeight": null,
+      "color": "#9e8fb5"
+    },
+    {
+      "type": "RichText",
+      "x": 199.25,
+      "y": 182.0,
+      "w": 78.75,
+      "h": 16.0
+    },
+    {
+      "type": "KeyedSubtree",
+      "x": 12.0,
+      "y": 208.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "AutomaticKeepAlive",
+      "x": 12.0,
+      "y": 208.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "KeepAlive",
+      "x": 12.0,
+      "y": 208.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "NotificationListener<KeepAliveNotification>",
+      "x": 12.0,
+      "y": 208.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "_SelectionKeepAlive",
+      "x": 12.0,
+      "y": 208.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "IndexedSemantics",
+      "x": 12.0,
+      "y": 208.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "RepaintBoundary",
+      "x": 12.0,
+      "y": 208.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 12.0,
+      "y": 208.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "KeyedSubtree",
+      "x": 12.0,
+      "y": 216.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "AutomaticKeepAlive",
+      "x": 12.0,
+      "y": 216.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "KeepAlive",
+      "x": 12.0,
+      "y": 216.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "NotificationListener<KeepAliveNotification>",
+      "x": 12.0,
+      "y": 216.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "_SelectionKeepAlive",
+      "x": 12.0,
+      "y": 216.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "IndexedSemantics",
+      "x": 12.0,
+      "y": 216.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "RepaintBoundary",
+      "x": 12.0,
+      "y": 216.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "Align",
+      "x": 12.0,
+      "y": 216.0,
+      "w": 369.0,
+      "h": 100.0
+    },
+    {
+      "type": "Container",
+      "x": 101.0,
+      "y": 216.0,
+      "w": 280.0,
+      "h": 100.0,
+      "bgColor": "#6c2ca7",
+      "borderRadius": 18.0
+    },
+    {
+      "type": "ConstrainedBox",
+      "x": 101.0,
+      "y": 216.0,
+      "w": 280.0,
+      "h": 100.0
+    },
+    {
+      "type": "DecoratedBox",
+      "x": 101.0,
+      "y": 216.0,
+      "w": 280.0,
+      "h": 100.0
+    },
+    {
+      "type": "Padding",
+      "x": 101.0,
+      "y": 216.0,
+      "w": 280.0,
+      "h": 100.0
+    },
+    {
+      "type": "Column",
+      "x": 115.0,
+      "y": 226.0,
+      "w": 252.0,
+      "h": 80.0
+    },
+    {
+      "type": "Text",
+      "x": 115.0,
+      "y": 226.0,
+      "w": 252.0,
+      "h": 60.0,
+      "text": "Pretty good! Finishing up the chat screen.",
+      "fontSize": 15.0,
+      "fontWeight": "FontWeight.w400",
+      "color": "#ffffff"
+    },
+    {
+      "type": "RichText",
+      "x": 115.0,
+      "y": 226.0,
+      "w": 252.0,
+      "h": 60.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 367.0,
+      "y": 286.0,
+      "w": 0.0,
+      "h": 4.0
+    },
+    {
+      "type": "Text",
+      "x": 288.25,
+      "y": 290.0,
+      "w": 78.75,
+      "h": 16.0,
+      "text": "2:22 PM",
+      "fontSize": 11.0,
+      "fontWeight": null,
+      "color": "#ffffff"
+    },
+    {
+      "type": "RichText",
+      "x": 288.25,
+      "y": 290.0,
+      "w": 78.75,
+      "h": 16.0
+    },
+    {
+      "type": "KeyedSubtree",
+      "x": 12.0,
+      "y": 316.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "AutomaticKeepAlive",
+      "x": 12.0,
+      "y": 316.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "KeepAlive",
+      "x": 12.0,
+      "y": 316.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "NotificationListener<KeepAliveNotification>",
+      "x": 12.0,
+      "y": 316.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "_SelectionKeepAlive",
+      "x": 12.0,
+      "y": 316.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "IndexedSemantics",
+      "x": 12.0,
+      "y": 316.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "RepaintBoundary",
+      "x": 12.0,
+      "y": 316.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 12.0,
+      "y": 316.0,
+      "w": 369.0,
+      "h": 8.0
+    },
+    {
+      "type": "KeyedSubtree",
+      "x": 12.0,
+      "y": 324.0,
+      "w": 369.0,
+      "h": 80.0
+    },
+    {
+      "type": "AutomaticKeepAlive",
+      "x": 12.0,
+      "y": 324.0,
+      "w": 369.0,
+      "h": 80.0
+    },
+    {
+      "type": "KeepAlive",
+      "x": 12.0,
+      "y": 324.0,
+      "w": 369.0,
+      "h": 80.0
+    },
+    {
+      "type": "NotificationListener<KeepAliveNotification>",
+      "x": 12.0,
+      "y": 324.0,
+      "w": 369.0,
+      "h": 80.0
+    },
+    {
+      "type": "_SelectionKeepAlive",
+      "x": 12.0,
+      "y": 324.0,
+      "w": 369.0,
+      "h": 80.0
+    },
+    {
+      "type": "IndexedSemantics",
+      "x": 12.0,
+      "y": 324.0,
+      "w": 369.0,
+      "h": 80.0
+    },
+    {
+      "type": "RepaintBoundary",
+      "x": 12.0,
+      "y": 324.0,
+      "w": 369.0,
+      "h": 80.0
+    },
+    {
+      "type": "Align",
+      "x": 12.0,
+      "y": 324.0,
+      "w": 369.0,
+      "h": 80.0
+    },
+    {
+      "type": "Container",
+      "x": 12.0,
+      "y": 324.0,
+      "w": 280.0,
+      "h": 80.0,
+      "bgColor": "#2a1545",
+      "borderRadius": 18.0
+    },
+    {
+      "type": "ConstrainedBox",
+      "x": 12.0,
+      "y": 324.0,
+      "w": 280.0,
+      "h": 80.0
+    },
+    {
+      "type": "DecoratedBox",
+      "x": 12.0,
+      "y": 324.0,
+      "w": 280.0,
+      "h": 80.0
+    },
+    {
+      "type": "Padding",
+      "x": 12.0,
+      "y": 324.0,
+      "w": 280.0,
+      "h": 80.0
+    },
+    {
+      "type": "Column",
+      "x": 26.0,
+      "y": 334.0,
+      "w": 252.0,
+      "h": 60.0
+    },
+    {
+      "type": "Text",
+      "x": 26.0,
+      "y": 334.0,
+      "w": 252.0,
+      "h": 40.0,
+      "text": "Take your time! No rush.",
+      "fontSize": 15.0,
+      "fontWeight": "FontWeight.w400",
+      "color": "#f0f6fc"
+    },
+    {
+      "type": "RichText",
+      "x": 26.0,
+      "y": 334.0,
+      "w": 252.0,
+      "h": 40.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 278.0,
+      "y": 374.0,
+      "w": 0.0,
+      "h": 4.0
+    },
+    {
+      "type": "Text",
+      "x": 199.25,
+      "y": 378.0,
+      "w": 78.75,
+      "h": 16.0,
+      "text": "2:28 PM",
+      "fontSize": 11.0,
+      "fontWeight": null,
+      "color": "#9e8fb5"
+    },
+    {
+      "type": "RichText",
+      "x": 199.25,
+      "y": 378.0,
+      "w": 78.75,
+      "h": 16.0
+    },
+    {
+      "type": "Container",
+      "x": 0.0,
+      "y": 761.0,
+      "w": 393.0,
+      "h": 57.0
+    },
+    {
+      "type": "ColoredBox",
+      "x": 0.0,
+      "y": 761.0,
+      "w": 393.0,
+      "h": 57.0
+    },
+    {
+      "type": "Padding",
+      "x": 0.0,
+      "y": 761.0,
+      "w": 393.0,
+      "h": 57.0
+    },
+    {
+      "type": "Row",
+      "x": 8.0,
+      "y": 769.0,
+      "w": 377.0,
+      "h": 41.0
+    },
+    {
+      "type": "Icon",
+      "x": 8.0,
+      "y": 777.5,
+      "w": 24.0,
+      "h": 24.0,
+      "iconSize": 24.0,
+      "color": "#9e8fb5"
+    },
+    {
+      "type": "Semantics",
+      "x": 8.0,
+      "y": 777.5,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "ExcludeSemantics",
+      "x": 8.0,
+      "y": 777.5,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 8.0,
+      "y": 777.5,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "Center",
+      "x": 8.0,
+      "y": 777.5,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "RichText",
+      "x": 8.0,
+      "y": 777.5,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 32.0,
+      "y": 789.5,
+      "w": 8.0,
+      "h": 0.0
+    },
+    {
+      "type": "Expanded",
+      "x": 40.0,
+      "y": 769.0,
+      "w": 313.0,
+      "h": 41.0
+    },
+    {
+      "type": "Container",
+      "x": 40.0,
+      "y": 769.0,
+      "w": 313.0,
+      "h": 41.0,
+      "bgColor": "#251545",
+      "borderRadius": 24.0
+    },
+    {
+      "type": "DecoratedBox",
+      "x": 40.0,
+      "y": 769.0,
+      "w": 313.0,
+      "h": 41.0
+    },
+    {
+      "type": "Padding",
+      "x": 40.0,
+      "y": 769.0,
+      "w": 313.0,
+      "h": 41.0
+    },
+    {
+      "type": "Text",
+      "x": 56.0,
+      "y": 779.0,
+      "w": 281.0,
+      "h": 21.0,
+      "text": "Message...",
+      "fontSize": 15.0,
+      "fontWeight": null,
+      "color": "#9e8fb5"
+    },
+    {
+      "type": "RichText",
+      "x": 56.0,
+      "y": 779.0,
+      "w": 281.0,
+      "h": 21.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 353.0,
+      "y": 789.5,
+      "w": 8.0,
+      "h": 0.0
+    },
+    {
+      "type": "Icon",
+      "x": 361.0,
+      "y": 777.5,
+      "w": 24.0,
+      "h": 24.0,
+      "iconSize": 24.0,
+      "color": "#9e8fb5"
+    },
+    {
+      "type": "Semantics",
+      "x": 361.0,
+      "y": 777.5,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "ExcludeSemantics",
+      "x": 361.0,
+      "y": 777.5,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 361.0,
+      "y": 777.5,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "Center",
+      "x": 361.0,
+      "y": 777.5,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "RichText",
+      "x": 361.0,
+      "y": 777.5,
+      "w": 24.0,
+      "h": 24.0
+    },
+    {
+      "type": "SizedBox",
+      "x": 196.5,
+      "y": 818.0,
+      "w": 0.0,
+      "h": 34.0
+    },
+    {
+      "type": "LayoutId",
+      "x": 377.0,
+      "y": 836.0,
+      "w": 0.0,
+      "h": 0.0
+    },
+    {
+      "type": "MediaQuery",
+      "x": 377.0,
+      "y": 836.0,
+      "w": 0.0,
+      "h": 0.0
+    },
+    {
+      "type": "_FloatingActionButtonTransition",
+      "x": 377.0,
+      "y": 836.0,
+      "w": 0.0,
+      "h": 0.0
+    },
+    {
+      "type": "Stack",
+      "x": 377.0,
+      "y": 836.0,
+      "w": 0.0,
+      "h": 0.0
+    },
+    {
+      "type": "ScaleTransition",
+      "x": 377.0,
+      "y": 836.0,
+      "w": 0.0,
+      "h": 0.0
+    },
+    {
+      "type": "Transform",
+      "x": 377.0,
+      "y": 836.0,
+      "w": 0.0,
+      "h": 0.0
+    },
+    {
+      "type": "RotationTransition",
+      "x": 377.0,
+      "y": 836.0,
+      "w": 0.0,
+      "h": 0.0
+    },
+    {
+      "type": "Transform",
+      "x": 377.0,
+      "y": 836.0,
+      "w": 0.0,
+      "h": 0.0
+    }
+  ]
+}

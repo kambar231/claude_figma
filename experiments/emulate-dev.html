@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=393, initial-scale=1.0">
+<title>Belo – Dev Branch Chat Screen Emulation</title>
+<style>
+  @font-face {
+    font-family: 'Bumbbled';
+    src: url('../balo/frontend/messaging_app/assets/fonts/Bumbbled.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'ABCArizonaMix';
+    src: url('../balo/frontend/messaging_app/assets/fonts/arizona-font/ABCArizonaMix-Regular-Trial.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'ABCArizonaMix';
+    src: url('../balo/frontend/messaging_app/assets/fonts/arizona-font/ABCArizonaMix-Bold-Trial.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  :root {
+    /* Dark theme colors from BaloColors.dark */
+    --gradient-center: #3C1749;
+    --gradient-middle: #4F2C5A;
+    --gradient-outer: #1A0D2E;
+    --bg-base: #0C0415;
+    --text-primary: #F0F6FC;
+    --text-secondary: #D1C4E9;
+    --text-muted: #9E8FB5;
+    --text-on-accent: #FFFFFF;
+    --card-bg: #1E1030;
+    --card-border: rgba(108, 44, 167, 0.2);
+    --input-bg: #251545;
+    --input-border: rgba(155, 77, 202, 0.3);
+    --surface-elevated: #1E1030;
+    --logo-color: #F0F6FC;
+    --accent: #BA82ED;
+    --accent-secondary: #E879A8;
+    --success: #5A9E7A;
+    --error: #B86B6B;
+    --icon-primary: #D4B8FF;
+    --icon-secondary: #9E8FB5;
+    --divider: rgba(108, 44, 167, 0.2);
+    --shadow-color: rgba(108, 44, 167, 0.25);
+    --glass-dark: rgba(12, 4, 21, 0.85);
+    --glass-white-10: rgba(255, 255, 255, 0.10);
+    --glass-white-08: rgba(255, 255, 255, 0.08);
+    --glass-white-55: rgba(255, 255, 255, 0.55);
+
+    /* Sender colors (dark palette) */
+    --sender-teal: #5EC4B6;
+    --sender-coral: #E87D7D;
+    --sender-purple: #B39DDB;
+    --sender-green: #81C784;
+    --sender-amber: #FFB74D;
+    --sender-blue: #4FC3F7;
+
+    /* Mood glow (default purple when dormant) */
+    --glow-color: #9B6FD4;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    width: 393px;
+    height: 852px;
+    overflow: hidden;
+    font-family: 'ABCArizonaMix', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    position: relative;
+  }
+
+  /* Background — mood gradient (linear, top→bottom, 3-stop) */
+  .background {
+    position: absolute;
+    inset: 0;
+    /* Default dormant: dark purple base with subtle warm center */
+    background: linear-gradient(
+      180deg,
+      #2A1838 0%,
+      #3C1749 35%,
+      #1A0D2E 100%
+    );
+    z-index: 0;
+  }
+
+  /* ══════════════ STATUS BAR ══════════════ */
+  .status-bar {
+    position: relative;
+    z-index: 10;
+    height: 54px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 28px 6px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .status-bar .time { font-variant-numeric: tabular-nums; }
+  .status-bar .right {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    font-size: 12px;
+  }
+
+  /* Dynamic Island */
+  .dynamic-island {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 126px;
+    height: 37px;
+    background: #000;
+    border-radius: 20px;
+    z-index: 20;
+  }
+
+  /* ══════════════ HEADER ══════════════ */
+  .header {
+    position: relative;
+    z-index: 10;
+    height: 120px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .header-row {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Header buttons row — Alignment(-x, -0.4) maps to ~30% from top of 120px = 36px */
+  .header-btn {
+    position: absolute;
+    top: 26px;
+  }
+  .btn-back { left: 0; }
+  .btn-phone { left: 68px; }
+  .btn-video { right: 68px; }
+  .btn-stack { right: 0; }
+
+  .header-icon-btn {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  /* Glass orb button (36px ball, 59px glow, 34px ring) */
+  .glass-orb-btn {
+    width: 59px;
+    height: 59px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .glass-orb-btn .glow {
+    position: absolute;
+    width: 59px;
+    height: 59px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(155, 111, 212, 0.18) 0%,
+      rgba(155, 111, 212, 0.07) 50%,
+      rgba(155, 111, 212, 0) 100%
+    );
+  }
+  .glass-orb-btn .ring {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--glass-dark);
+    box-shadow:
+      0 0 16px 2px rgba(155, 111, 212, 0.18),
+      0 0 10px -6px rgba(155, 111, 212, 0.20);
+    overflow: hidden;
+  }
+  .glass-orb-btn .ring::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 25%,
+      var(--glass-white-10) 0%,
+      transparent 100%
+    );
+  }
+  .glass-orb-btn .icon {
+    position: relative;
+    z-index: 2;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 16px;
+  }
+
+  /* Center orb — group avatar (50px avatar, 82px glow, 47px ring) */
+  .center-orb {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .center-orb-container {
+    width: 82px;
+    height: 82px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .center-orb .glow {
+    position: absolute;
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(155, 111, 212, 0.52) 0%,
+      rgba(155, 111, 212, 0.22) 50%,
+      rgba(155, 111, 212, 0) 100%
+    );
+  }
+  .center-orb .ring {
+    position: absolute;
+    width: 47px;
+    height: 47px;
+    border-radius: 50%;
+    background: rgba(12, 4, 21, 0.85);
+    box-shadow:
+      0 0 20px 2px rgba(155, 111, 212, 0.35),
+      0 0 14px -8px rgba(155, 111, 212, 0.50);
+    overflow: hidden;
+  }
+  .center-orb .ring::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 25%,
+      var(--glass-white-10) 0%,
+      transparent 100%
+    );
+  }
+  .center-orb .avatar {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #0E2A2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+  .center-orb .avatar .group-icon {
+    font-size: 21px;
+    color: rgba(155, 111, 212, 0.80);
+  }
+
+  /* Member count badge */
+  .member-badge {
+    position: absolute;
+    bottom: 14px;
+    right: 12px;
+    background: var(--glow-color);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 5px;
+    border-radius: 8px;
+    border: 1.5px solid var(--bg-base);
+    z-index: 3;
+    line-height: 1.2;
+  }
+
+  /* Group name + subtitle below the orb */
+  .group-info {
+    text-align: center;
+    margin-top: -10px;
+  }
+  .group-name {
+    font-family: -apple-system, 'SF Pro Rounded', BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+  }
+  .group-subtitle {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
+
+  /* ══════════════ MESSAGE LIST ══════════════ */
+  .message-list {
+    position: relative;
+    z-index: 5;
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0;
+    /* Height: 852 - 54 (status) - 120 (header) - 80 (input) = 598 */
+    height: 598px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .message-row {
+    padding-left: 16px;
+    padding-right: 60px;
+  }
+  .message-row.first-in-group { padding-top: 8px; }
+  .message-row.mid-in-group { padding-top: 3px; }
+  .message-row.last-in-group { padding-bottom: 8px; }
+
+  .sender-name {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .sender-name.coral { color: var(--sender-coral); }
+  .sender-name.teal { color: var(--sender-teal); }
+  .sender-name.purple { color: var(--sender-purple); }
+
+  .message-text {
+    font-size: 15px;
+    color: var(--text-primary);
+    line-height: 1.4;
+    font-family: 'ABCArizonaMix', -apple-system, sans-serif;
+    word-wrap: break-word;
+  }
+
+  .message-time {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* ══════════════ INPUT AREA ══════════════ */
+  .input-area {
+    position: relative;
+    z-index: 10;
+    border-top: 0.5px solid var(--glass-white-08);
+    padding: 10px 12px;
+    padding-bottom: 30px; /* extra for home indicator */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Height is auto but approximately 80px */
+  }
+
+  /* Glass ball (left) — 44px avatar, 72px glow, 41px ring */
+  .input-glass-ball {
+    width: 44px;
+    height: 44px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .input-glass-ball .glow {
+    position: absolute;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(155, 111, 212, 0.60) 0%,
+      rgba(155, 111, 212, 0.28) 50%,
+      rgba(155, 111, 212, 0) 100%
+    );
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .input-glass-ball .ring {
+    position: absolute;
+    width: 41px;
+    height: 41px;
+    border-radius: 50%;
+    background: var(--glass-dark);
+    box-shadow:
+      0 0 20px 2px rgba(155, 111, 212, 0.40),
+      0 0 14px -8px rgba(155, 111, 212, 0.55);
+    overflow: hidden;
+  }
+  .input-glass-ball .ring::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 25%,
+      var(--glass-white-10) 0%,
+      transparent 100%
+    );
+  }
+  .input-glass-ball .dots {
+    position: relative;
+    z-index: 2;
+    color: var(--glass-white-55);
+    font-size: 16px;
+  }
+
+  /* Text input placeholder area */
+  .input-text-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 18px 0;
+  }
+  .input-placeholder {
+    font-family: 'Bumbbled', cursive;
+    font-size: 20px;
+    color: rgba(240, 246, 252, 0.18);
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+
+  /* GIF button */
+  .gif-btn {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    padding: 0 6px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  /* Mic glass ball (right) — 40px ball, 66px glow, 37.6px ring */
+  .mic-glass-ball {
+    width: 66px;
+    height: 66px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: -11px;
+  }
+  .mic-glass-ball .glow {
+    position: absolute;
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(155, 111, 212, 0.18) 0%,
+      rgba(155, 111, 212, 0.07) 50%,
+      rgba(155, 111, 212, 0) 100%
+    );
+  }
+  .mic-glass-ball .ring {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--glass-dark);
+    box-shadow:
+      0 0 18px 2px rgba(155, 111, 212, 0.18),
+      0 0 12px -7px rgba(155, 111, 212, 0.20);
+    overflow: hidden;
+  }
+  .mic-glass-ball .ring::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 25%,
+      var(--glass-white-10) 0%,
+      transparent 100%
+    );
+  }
+  .mic-glass-ball .icon {
+    position: relative;
+    z-index: 2;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 17px;
+  }
+
+  /* Home indicator */
+  .home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 3px;
+    z-index: 20;
+  }
+
+  /* SVG icons */
+  .icon-svg {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+  }
+
+  /* Layout container */
+  .screen {
+    width: 393px;
+    height: 852px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+</style>
+<!-- Material Icons for icon glyphs -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+</head>
+<body>
+<div class="screen">
+  <div class="background"></div>
+
+  <!-- Dynamic Island -->
+  <div class="dynamic-island"></div>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="time">2:32</span>
+    <span class="right">
+      <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><rect x="0" y="5" width="3" height="7" rx="1" fill="white"/><rect x="4.5" y="3" width="3" height="9" rx="1" fill="white"/><rect x="9" y="1" width="3" height="11" rx="1" fill="white"/><rect x="13.5" y="0" width="3" height="12" rx="1" fill="white" opacity="0.35"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 2.5C10.5 2.5 12.7 3.6 14.2 5.3L15.3 4.2C13.5 2.2 10.9 1 8 1C5.1 1 2.5 2.2 0.7 4.2L1.8 5.3C3.3 3.6 5.5 2.5 8 2.5Z" fill="white"/><path d="M8 5.5C9.7 5.5 11.2 6.2 12.3 7.3L13.4 6.2C12 4.8 10.1 4 8 4C5.9 4 4 4.8 2.6 6.2L3.7 7.3C4.8 6.2 6.3 5.5 8 5.5Z" fill="white"/><path d="M8 8.5C8.8 8.5 9.6 8.8 10.2 9.4L8 12L5.8 9.4C6.4 8.8 7.2 8.5 8 8.5Z" fill="white"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" fill="none"><rect x="0.5" y="0.5" width="22" height="12" rx="2.5" stroke="white" opacity="0.35"/><rect x="23.5" y="4" width="2" height="5" rx="1" fill="white" opacity="0.4"/><rect x="2" y="2" width="16" height="9" rx="1.5" fill="white"/></svg>
+    </span>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-row">
+      <!-- Back button -->
+      <div class="header-btn btn-back">
+        <div class="header-icon-btn">
+          <span class="material-icons-round" style="font-size: 28px; color: var(--text-primary);">chevron_left</span>
+        </div>
+      </div>
+
+      <!-- Phone call glass button -->
+      <div class="header-btn btn-phone">
+        <div class="glass-orb-btn">
+          <div class="glow"></div>
+          <div class="ring"></div>
+          <span class="material-icons-round icon" style="font-size: 17px;">phone</span>
+        </div>
+      </div>
+
+      <!-- Center orb (group avatar) -->
+      <div class="center-orb">
+        <div class="center-orb-container">
+          <div class="glow"></div>
+          <div class="ring"></div>
+          <div class="avatar">
+            <span class="material-icons-round group-icon">group</span>
+          </div>
+          <div class="member-badge">8</div>
+        </div>
+        <div class="group-info">
+          <div class="group-name">belo team</div>
+          <div class="group-subtitle">8 members</div>
+        </div>
+      </div>
+
+      <!-- Video call glass button -->
+      <div class="header-btn btn-video">
+        <div class="glass-orb-btn">
+          <div class="glow"></div>
+          <div class="ring"></div>
+          <span class="material-icons-round icon" style="font-size: 17px;">videocam</span>
+        </div>
+      </div>
+
+      <!-- Stack icon -->
+      <div class="header-btn btn-stack">
+        <div class="header-icon-btn">
+          <span class="material-icons-round" style="font-size: 20px; color: var(--text-primary);">filter_none</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message List -->
+  <div class="message-list">
+    <!-- Roman OG (coral) — first message in group -->
+    <div class="message-row first-in-group">
+      <div class="sender-name coral">Roman OG</div>
+      <div class="message-text">Nope I get to about 90% of the weekly limit each week</div>
+      <div class="message-time">11:16</div>
+    </div>
+
+    <!-- Roman OG (coral) — second message, same group -->
+    <div class="message-row mid-in-group last-in-group">
+      <div class="message-text">My fleet self adjusts to keep it under</div>
+      <div class="message-time">11:16</div>
+    </div>
+
+    <!-- Enis Dev (teal) — new sender -->
+    <div class="message-row first-in-group last-in-group">
+      <div class="sender-name teal">Enis Dev</div>
+      <div class="message-text">Did you see the new Claude cowork</div>
+      <div class="message-time">11:17</div>
+    </div>
+
+    <!-- Roman OG (coral) — new group -->
+    <div class="message-row first-in-group last-in-group">
+      <div class="sender-name coral">Roman OG</div>
+      <div class="message-text">Indeed, they're just porting all the features from the open source claude code community to their own product which is cool</div>
+      <div class="message-time">11:31</div>
+    </div>
+
+    <!-- Saeed Sharifi (purple) — first in group -->
+    <div class="message-row first-in-group">
+      <div class="sender-name purple">Saeed Sharifi</div>
+      <div class="message-text">Btw im getting notifications for messages but when i open it it shows nothing</div>
+      <div class="message-time">11:44</div>
+    </div>
+
+    <!-- Saeed Sharifi (purple) — second message -->
+    <div class="message-row mid-in-group last-in-group">
+      <div class="message-text">I have to refresh the app to see</div>
+      <div class="message-time">11:44</div>
+    </div>
+
+    <!-- Roman Dev (coral) -->
+    <div class="message-row first-in-group last-in-group">
+      <div class="sender-name coral">Roman Dev</div>
+      <div class="message-text">Ok will look into it</div>
+      <div class="message-time">12:39</div>
+    </div>
+  </div>
+
+  <!-- Input Area -->
+  <div class="input-area">
+    <!-- Glass ball (left) with vertical dots -->
+    <div class="input-glass-ball">
+      <div class="glow"></div>
+      <div class="ring"></div>
+      <span class="material-icons-round dots">more_vert</span>
+    </div>
+
+    <!-- Text field with "belo" placeholder -->
+    <div class="input-text-area">
+      <span class="input-placeholder">belo</span>
+    </div>
+
+    <!-- GIF button -->
+    <span class="gif-btn">GIF</span>
+
+    <!-- Mic glass ball (right) -->
+    <div class="mic-glass-ball">
+      <div class="glow"></div>
+      <div class="ring"></div>
+      <span class="material-icons-round icon" style="font-size: 17px;">mic_none</span>
+    </div>
+  </div>
+
+  <!-- Home Indicator -->
+  <div class="home-indicator"></div>
+</div>
+</body>
+</html>

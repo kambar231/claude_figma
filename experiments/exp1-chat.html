@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=393, initial-scale=1.0">
+<title>Belo Chat Screen — Dark Mode (393×852)</title>
+<style>
+  /* Reset */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ── Exact dark-mode colors from color_palette.dart ──────────── */
+  :root {
+    --bg:             #0C0415;
+    --bubble-out:     #6C2CA7;
+    --bubble-in:      #2A1545;
+    --text-out:       #FFFFFF;
+    --text-in:        #F0F6FC;
+    --text-primary:   #F0F6FC;
+    --text-secondary: #D1C4E9;
+    --text-muted:     #9E8FB5;
+    --input-bg:       #251545;
+    --accent:         #BA82ED;
+    --accent-sec:     #E879A8;
+    --success:        #5A9E7A;
+    --glow:           #9B6FD4;
+    --shadow:         #6C2CA7;
+    --icon-primary:   #D4B8FF;
+    --icon-secondary: #9E8FB5;
+    --card-bg:        #1E1030;
+    --divider:        rgba(108,44,167,0.2);
+    --overlay:        rgba(0,0,0,0.6);
+  }
+
+  body {
+    width: 393px;
+    height: 852px;
+    overflow: hidden;
+    background: var(--bg);
+    font-family: 'ABC Arizona Mix Unlicensed Trial', 'SF Pro Text', -apple-system, sans-serif;
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .phone {
+    width: 393px;
+    height: 852px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── Dynamic Island + Status bar ─────────────────────────────── */
+  .status-bar {
+    height: 59px;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .dynamic-island {
+    width: 126px;
+    height: 37px;
+    background: #000000;
+    border-radius: 22px;
+  }
+  .status-time {
+    position: absolute;
+    left: 30px;
+    top: 17px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: 'SF Pro Text', -apple-system, sans-serif;
+  }
+  .status-icons {
+    position: absolute;
+    right: 24px;
+    top: 18px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  .status-icons svg { width: 18px; height: 12px; fill: var(--text-primary); }
+
+  /* ── Header (DM): 120px preferred size from _buildDmHeader ─── */
+  .header {
+    height: 120px;
+    padding: 0 8px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  /* Button row: Alignment y=-0.4 → visually ~30% from top of 120px = ~36px */
+  .header-buttons {
+    position: absolute;
+    top: 12px;
+    left: 0;
+    right: 0;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+  }
+  .header-btn {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .header-btn svg {
+    fill: var(--text-primary);
+  }
+  .call-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .call-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: var(--icon-primary);
+  }
+  .header-center-spacer { flex: 1; }
+
+  /* Avatar + Name: centered, avatarY=-1 means top of header area */
+  .header-avatar-group {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .avatar-glow {
+    width: 89px;  /* 54 * 1.65 */
+    height: 89px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(155,111,212,0.30) 0%, rgba(155,111,212,0.10) 50%, rgba(155,111,212,0) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .avatar-ring {
+    width: 51px; /* 54 * 0.94 */
+    height: 51px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .avatar-circle {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6C2CA7, #9B4DCA);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #FFFFFF;
+  }
+  .header-name {
+    margin-top: -8px; /* nameOverlap: 14 adjusted for layout */
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-align: center;
+    letter-spacing: 0.2px;
+  }
+  .header-online {
+    font-size: 11px;
+    color: var(--success);
+    margin-top: 1px;
+  }
+
+  /* ── Messages area ───────────────────────────────────────────── */
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 8px;
+  }
+
+  /* ── Message Bubble (from message_bubble.dart) ───────────────── */
+  .msg-row {
+    display: flex;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .msg-row.outgoing {
+    padding-left: 60px;
+    justify-content: flex-end;
+  }
+  .msg-row.incoming {
+    padding-right: 60px;
+    justify-content: flex-start;
+  }
+  .msg-row.first-in-group { padding-top: 6px; }
+  .msg-row.mid-in-group   { padding-top: 2px; }
+  .msg-row.last-in-group  { padding-bottom: 6px; }
+
+  .bubble {
+    max-width: 75%;
+    padding: 10px 14px;
+    border-radius: 18px;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(108,44,167,0.25);
+  }
+  .bubble.outgoing {
+    background: var(--bubble-out);
+    color: var(--text-out);
+  }
+  .bubble.incoming {
+    background: var(--bubble-in);
+    color: var(--text-in);
+  }
+  /* Last in group: 4px on sender's side */
+  .bubble.outgoing.last-group { border-bottom-right-radius: 4px; }
+  .bubble.incoming.last-group { border-bottom-left-radius: 4px; }
+
+  .bubble-text {
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .bubble-meta {
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .bubble-meta.out { justify-content: flex-end; }
+  .bubble-meta.in  { justify-content: flex-start; }
+
+  .bubble-time {
+    font-size: 11px;
+    opacity: 0.6;
+  }
+  .bubble-status {
+    width: 14px;
+    height: 14px;
+  }
+  .bubble-status svg { width: 14px; height: 14px; }
+  .bubble-status.read svg { fill: var(--success); }
+  .bubble-status.delivered svg { fill: currentColor; opacity: 0.6; }
+
+  /* ── Input Area ──────────────────────────────────────────────── */
+  .input-area {
+    flex-shrink: 0;
+    background: var(--bg);
+    border-top: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 24px 24px 28px 28px;
+    padding: 10px 12px;
+    padding-bottom: 34px; /* safe area bottom */
+  }
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  /* Glass ball (left) — 44px with glow */
+  .glass-ball-wrap {
+    width: 72px; /* 44 * 1.65 */
+    height: 72px;
+    flex-shrink: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .glass-ball-glow {
+    position: absolute;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(155,111,212,0.18) 0%, rgba(155,111,212,0.07) 50%, rgba(155,111,212,0) 100%);
+  }
+  .glass-ball-ring {
+    width: 41px; /* 44 * 0.94 */
+    height: 41px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+  .glass-ball-inner {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(186,130,237,0.30), rgba(108,44,167,0.20));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .glass-ball-inner svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--accent);
+  }
+
+  /* Text field placeholder (belo hint) */
+  .text-field {
+    flex: 1;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    color: rgba(240,246,252,0.18);
+    font-size: 16px;
+    font-family: 'ABC Arizona Mix Unlicensed Trial', 'SF Pro Text', sans-serif;
+  }
+  .belo-hint {
+    font-family: 'Bumbbled', cursive;
+    font-size: 20px;
+    color: rgba(240,246,252,0.18);
+  }
+
+  /* Voice button (right) — 40px ball */
+  .voice-btn-wrap {
+    width: 66px; /* 40 * 1.65 */
+    height: 66px;
+    flex-shrink: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .voice-btn-glow {
+    position: absolute;
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(155,111,212,0.18) 0%, rgba(155,111,212,0.07) 50%, rgba(155,111,212,0) 100%);
+  }
+  .voice-btn-ring {
+    width: 37px; /* 40 * 0.94 */
+    height: 37px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+  .voice-btn-inner {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(186,130,237,0.30), rgba(108,44,167,0.20));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .voice-btn-inner svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--accent);
+  }
+</style>
+</head>
+<body>
+<div class="phone">
+  <!-- ═══ STATUS BAR ═══ -->
+  <div class="status-bar">
+    <div class="status-time">9:41</div>
+    <div class="dynamic-island"></div>
+    <div class="status-icons">
+      <!-- Signal -->
+      <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="4" y="5" width="3" height="7" rx="0.5" fill="currentColor"/><rect x="8" y="2" width="3" height="10" rx="0.5" fill="currentColor"/><rect x="12" y="0" width="3" height="12" rx="0.5" fill="currentColor"/></svg>
+      <!-- WiFi -->
+      <svg viewBox="0 0 16 12" width="16" height="12"><path d="M8 10.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3zM3.5 7.5C5 6 6.5 5.2 8 5.2s3 .8 4.5 2.3" stroke="currentColor" fill="none" stroke-width="1.5" stroke-linecap="round"/><path d="M1 4.5C3.5 2 5.8 1 8 1s4.5 1 7 3.5" stroke="currentColor" fill="none" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <!-- Battery -->
+      <svg viewBox="0 0 28 12" width="28" height="12"><rect x="0" y="0" width="24" height="12" rx="3" stroke="currentColor" fill="none" stroke-width="1"/><rect x="24.5" y="3.5" width="2" height="5" rx="1" fill="currentColor" opacity="0.4"/><rect x="2" y="2" width="19" height="8" rx="1.5" fill="currentColor"/></svg>
+    </div>
+  </div>
+
+  <!-- ═══ HEADER (DM layout) ═══ -->
+  <div class="header">
+    <!-- Button row -->
+    <div class="header-buttons">
+      <!-- Back -->
+      <div class="header-btn">
+        <svg width="28" height="28" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <!-- Call -->
+      <div class="call-btn">
+        <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1.003 1.003 0 011.05-.24c1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.07 21 3 13.93 3 4c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.1.31.03.66-.25 1.02l-2.2 2.2z" fill="currentColor"/></svg>
+      </div>
+      <div class="header-center-spacer"></div>
+      <!-- Video -->
+      <div class="call-btn">
+        <svg viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1v-3.5l4 4v-11l-4 4z" fill="currentColor"/></svg>
+      </div>
+      <!-- Stack -->
+      <div class="header-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1" stroke="currentColor" fill="none" stroke-width="1.5"/><rect x="13" y="3" width="8" height="8" rx="1" stroke="currentColor" fill="none" stroke-width="1.5"/><rect x="3" y="13" width="8" height="8" rx="1" stroke="currentColor" fill="none" stroke-width="1.5"/><rect x="13" y="13" width="8" height="8" rx="1" stroke="currentColor" fill="none" stroke-width="1.5"/></svg>
+      </div>
+    </div>
+    <!-- Avatar + Name (centered, near top) -->
+    <div class="header-avatar-group">
+      <div class="avatar-glow">
+        <div class="avatar-ring">
+          <div class="avatar-circle">E</div>
+        </div>
+      </div>
+      <div class="header-name">Elena</div>
+      <div class="header-online">online</div>
+    </div>
+  </div>
+
+  <!-- ═══ MESSAGES ═══ -->
+  <div class="messages">
+
+    <!-- Msg 1: incoming, first+last in group -->
+    <div class="msg-row incoming first-in-group last-in-group" style="padding-top:6px;padding-bottom:6px;">
+      <div class="bubble incoming last-group">
+        <div class="bubble-text">Hey, how are you doing? 😊</div>
+        <div class="bubble-meta in"><span class="bubble-time">10:30</span></div>
+      </div>
+    </div>
+
+    <!-- Msg 2: outgoing, first in group -->
+    <div class="msg-row outgoing first-in-group" style="padding-top:6px;padding-bottom:2px;">
+      <div class="bubble outgoing">
+        <div class="bubble-text">I'm great! Just finished that project we discussed last week</div>
+        <div class="bubble-meta out">
+          <span class="bubble-time">10:31</span>
+          <span class="bubble-status read"><svg viewBox="0 0 24 24"><path d="M18 7l-1.41-1.41L9 13.17l-2.58-2.59L5 12l4 4zm-2.5 0L14.09 5.59 8.5 11.17 6.41 9.09 5 10.5l3.5 3.5z" fill="currentColor"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Msg 3: outgoing, last in group -->
+    <div class="msg-row outgoing" style="padding-top:2px;padding-bottom:6px;">
+      <div class="bubble outgoing last-group">
+        <div class="bubble-text">It turned out really well!</div>
+        <div class="bubble-meta out">
+          <span class="bubble-time">10:31</span>
+          <span class="bubble-status read"><svg viewBox="0 0 24 24"><path d="M18 7l-1.41-1.41L9 13.17l-2.58-2.59L5 12l4 4zm-2.5 0L14.09 5.59 8.5 11.17 6.41 9.09 5 10.5l3.5 3.5z" fill="currentColor"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Msg 4: incoming, first+last -->
+    <div class="msg-row incoming first-in-group last-in-group" style="padding-top:6px;padding-bottom:6px;">
+      <div class="bubble incoming last-group">
+        <div class="bubble-text">That's amazing! Can you share some screenshots?</div>
+        <div class="bubble-meta in"><span class="bubble-time">10:33</span></div>
+      </div>
+    </div>
+
+    <!-- Msg 5: outgoing, first+last -->
+    <div class="msg-row outgoing first-in-group last-in-group" style="padding-top:6px;padding-bottom:6px;">
+      <div class="bubble outgoing last-group">
+        <div class="bubble-text">Sure! Let me send them over. The design system is looking really clean now with the dark mode</div>
+        <div class="bubble-meta out">
+          <span class="bubble-time">10:34</span>
+          <span class="bubble-status read"><svg viewBox="0 0 24 24"><path d="M18 7l-1.41-1.41L9 13.17l-2.58-2.59L5 12l4 4zm-2.5 0L14.09 5.59 8.5 11.17 6.41 9.09 5 10.5l3.5 3.5z" fill="currentColor"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Msg 6: incoming, first in group -->
+    <div class="msg-row incoming first-in-group" style="padding-top:6px;padding-bottom:2px;">
+      <div class="bubble incoming">
+        <div class="bubble-text">I love the purple gradient!</div>
+        <div class="bubble-meta in"><span class="bubble-time">10:35</span></div>
+      </div>
+    </div>
+
+    <!-- Msg 7: incoming, last in group -->
+    <div class="msg-row incoming" style="padding-top:2px;padding-bottom:6px;">
+      <div class="bubble incoming last-group">
+        <div class="bubble-text">The glass effects are so elegant ✨</div>
+        <div class="bubble-meta in"><span class="bubble-time">10:35</span></div>
+      </div>
+    </div>
+
+    <!-- Msg 8: outgoing, first+last -->
+    <div class="msg-row outgoing first-in-group last-in-group" style="padding-top:6px;padding-bottom:6px;">
+      <div class="bubble outgoing last-group">
+        <div class="bubble-text">Thanks! The cosmic theme really ties it all together</div>
+        <div class="bubble-meta out">
+          <span class="bubble-time">10:36</span>
+          <span class="bubble-status delivered"><svg viewBox="0 0 24 24"><path d="M18 7l-1.41-1.41L9 13.17l-2.58-2.59L5 12l4 4zm-2.5 0L14.09 5.59 8.5 11.17 6.41 9.09 5 10.5l3.5 3.5z" fill="currentColor"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Msg 9: incoming, first+last -->
+    <div class="msg-row incoming first-in-group last-in-group" style="padding-top:6px;padding-bottom:6px;">
+      <div class="bubble incoming last-group">
+        <div class="bubble-text">Can't wait to see the final version! When do you think it'll be ready?</div>
+        <div class="bubble-meta in"><span class="bubble-time">10:38</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ INPUT AREA ═══ -->
+  <div class="input-area">
+    <div class="input-row">
+      <!-- Glass ball (camera/snap) -->
+      <div class="glass-ball-wrap">
+        <div class="glass-ball-glow"></div>
+        <div class="glass-ball-ring">
+          <div class="glass-ball-inner">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+          </div>
+        </div>
+      </div>
+      <!-- Text field with belo hint -->
+      <div class="text-field">
+        <span class="belo-hint">belo</span>
+      </div>
+      <!-- Voice button -->
+      <div class="voice-btn-wrap">
+        <div class="voice-btn-glow"></div>
+        <div class="voice-btn-ring">
+          <div class="voice-btn-inner">
+            <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

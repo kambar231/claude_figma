@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=393, initial-scale=1.0">
+<title>ExpD: Belo Chat Screen — HTML Reference Trace (393x852)</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ── Dark-mode colors from BaloColors.dark (color_palette.dart) ── */
+  :root {
+    --bg:             #0C0415;
+    --gradient-center:#3C1749;
+    --gradient-middle:#4F2C5A;
+    --gradient-outer: #1A0D2E;
+    --text-primary:   #F0F6FC;
+    --text-secondary: #D1C4E9;
+    --text-muted:     #9E8FB5;
+    --text-on-accent: #FFFFFF;
+    --card-bg:        #1E1030;
+    --card-border:    rgba(108,44,167,0.2);
+    --input-bg:       #251545;
+    --input-border:   rgba(155,77,202,0.3);
+    --accent:         #BA82ED;
+    --accent-sec:     #E879A8;
+    --success:        #5A9E7A;
+    --error:          #B86B6B;
+    --icon-primary:   #D4B8FF;
+    --icon-secondary: #9E8FB5;
+    --divider:        rgba(108,44,167,0.2);
+    --glow:           #9B6FD4;
+    --bubble-out:     #6C2CA7;
+    --bubble-in:      #2A1545;
+    --overlay:        rgba(0,0,0,0.6);
+  }
+
+  body {
+    width: 393px;
+    height: 852px;
+    overflow: hidden;
+    background: var(--bg);
+    font-family: 'ABC Arizona Mix Unlicensed Trial', 'SF Pro Text', -apple-system, sans-serif;
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .phone {
+    width: 393px;
+    height: 852px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Radial background gradient matching Flutter ChatBackground */
+    background: radial-gradient(ellipse at 50% 30%, var(--gradient-center) 0%, var(--gradient-middle) 40%, var(--gradient-outer) 75%, var(--bg) 100%);
+  }
+
+  /* ── Status Bar (59px) ── */
+  .status-bar {
+    height: 59px;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .dynamic-island {
+    width: 126px;
+    height: 37px;
+    background: #000000;
+    border-radius: 22px;
+  }
+  .status-time {
+    position: absolute;
+    left: 30px;
+    top: 17px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: 'SF Pro Text', -apple-system, sans-serif;
+  }
+  .status-icons {
+    position: absolute;
+    right: 22px;
+    top: 17px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'SF Pro Text', -apple-system, sans-serif;
+  }
+
+  /* ── DM Header (120px preferred size from _buildDmHeader) ── */
+  .header {
+    height: 120px;
+    flex-shrink: 0;
+    position: relative;
+    padding: 0 8px;
+  }
+
+  /* Button row: Alignment(-1, -0.4) to Alignment(1, -0.4) */
+  /* -0.4 in 120px => y = 120/2 * (1 + (-0.4)) = 60 * 0.6 = 36px from top */
+  .header-btn-row {
+    position: absolute;
+    top: 36px;
+    left: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transform: translateY(-50%);
+  }
+
+  .header-btn {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .header-btn svg {
+    width: 28px;
+    height: 28px;
+    fill: none;
+    stroke: var(--text-primary);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Call buttons: glass orb style (36px ball, 59px glow) */
+  .call-btn {
+    width: 59px;
+    height: 59px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .call-btn-glow {
+    position: absolute;
+    width: 59px;
+    height: 59px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(155,111,212,0.18) 0%, rgba(155,111,212,0.07) 50%, transparent 100%);
+  }
+  .call-btn-ring {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(12,4,21,0.85);
+    box-shadow: 0 0 16px 2px rgba(155,111,212,0.18), 0 0 12px -7px rgba(155,111,212,0.20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+  .call-btn-ring svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: rgba(255,255,255,0.82);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Stack icon (far right) */
+  .stack-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Avatar + name: centered, Alignment(0, -1) => top of 120px area */
+  .header-center {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Eclipse glow layers (54px avatar, 89px glow, 50.76px ring) */
+  .avatar-eclipse {
+    width: 89px;
+    height: 89px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .avatar-glow {
+    position: absolute;
+    width: 89px;
+    height: 89px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(155,111,212,0.60) 0%, rgba(155,111,212,0.28) 50%, transparent 100%);
+  }
+  .avatar-ring {
+    width: 51px;
+    height: 51px;
+    border-radius: 50%;
+    background: rgba(12,4,21,0.85);
+    box-shadow: 0 0 20px 2px rgba(155,111,212,0.40), 0 0 14px -8px rgba(155,111,212,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+  }
+  .avatar-img {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #1A0A2E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: #FFFFFF;
+    position: relative;
+    z-index: 3;
+  }
+  .online-dot {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #34D399;
+    border: 2px solid #0C0415;
+    z-index: 4;
+  }
+
+  /* Name: overlapping bottom of avatar by 14px */
+  .header-name {
+    font-family: 'SF Pro Rounded', 'SF Pro Text', -apple-system, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-shadow: 0 2px 10px rgba(0,0,0,0.55);
+    margin-top: -14px;
+    z-index: 5;
+    position: relative;
+  }
+
+  /* ── Messages Area (scrollable middle) ── */
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px 16px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Messages: NO colored bubble backgrounds. Plain text. */
+  .msg-row {
+    display: flex;
+    width: 100%;
+  }
+  .msg-row.incoming { justify-content: flex-start; }
+  .msg-row.outgoing { justify-content: flex-end; }
+
+  .msg-content {
+    max-width: 75%;
+    display: flex;
+    flex-direction: column;
+  }
+  .msg-row.incoming .msg-content { align-items: flex-start; }
+  .msg-row.outgoing .msg-content { align-items: flex-end; }
+
+  /* Padding: first-in-group = 8px top, last-in-group = 8px bottom, else 3px */
+  .msg-row.first-in-group { padding-top: 8px; }
+  .msg-row.last-in-group { padding-bottom: 8px; }
+  .msg-row:not(.first-in-group) { padding-top: 3px; }
+  .msg-row:not(.last-in-group) { padding-bottom: 3px; }
+
+  /* Message text: plain, NO background, NO bubble */
+  .msg-text {
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--text-primary); /* #F0F6FC for BOTH incoming and outgoing */
+  }
+
+  /* Timestamp + read receipt row */
+  .msg-meta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+  }
+  .msg-time {
+    font-size: 11px;
+    color: var(--text-muted); /* #9E8FB5 */
+  }
+  .msg-receipt {
+    display: flex;
+    align-items: center;
+  }
+  .msg-receipt svg {
+    width: 14px;
+    height: 14px;
+  }
+  .msg-receipt.read svg { color: var(--success); fill: var(--success); }
+  .msg-receipt.delivered svg { color: var(--text-muted); fill: var(--text-muted); }
+
+  /* ── Input Area ── */
+  .input-area {
+    flex-shrink: 0;
+    border-top: 0.5px solid rgba(255,255,255,0.08);
+    padding: 10px 12px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 34px));
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Glass ball (left): 44px avatar, 72px glow, 41px ring */
+  .glass-ball-wrap {
+    width: 72px;
+    height: 72px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .glass-ball-glow {
+    position: absolute;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(155,111,212,0.60) 0%, rgba(155,111,212,0.28) 50%, transparent 100%);
+  }
+  .glass-ball-ring {
+    width: 41px;
+    height: 41px;
+    border-radius: 50%;
+    background: rgba(12,4,21,0.85);
+    box-shadow: 0 0 20px 2px rgba(155,111,212,0.40), 0 0 14px -8px rgba(155,111,212,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .glass-ball-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Frosted glass shimmer */
+    background: radial-gradient(circle at 50% 25%, rgba(255,255,255,0.10) 0%, transparent 100%);
+    border-radius: 50%;
+  }
+  .glass-ball-inner .dots {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: center;
+  }
+  .glass-ball-inner .dot {
+    width: 3.5px;
+    height: 3.5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.55);
+  }
+
+  /* Text field */
+  .text-field {
+    flex: 1;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    position: relative;
+  }
+  .belo-hint {
+    font-family: 'Bumbbled', 'ABC Arizona Mix Unlicensed Trial', sans-serif;
+    font-size: 20px;
+    color: rgba(240,246,252,0.18);
+    user-select: none;
+    letter-spacing: -0.3px;
+  }
+
+  /* Voice button (right): 40px ball, 66px glow, 37.6px ring */
+  .voice-btn-wrap {
+    width: 66px;
+    height: 66px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .voice-btn-glow {
+    position: absolute;
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(155,111,212,0.18) 0%, rgba(155,111,212,0.07) 50%, transparent 100%);
+  }
+  .voice-btn-ring {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(12,4,21,0.85);
+    box-shadow: 0 0 18px 2px rgba(155,111,212,0.18), 0 0 12px -7px rgba(155,111,212,0.20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .voice-btn-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 25%, rgba(255,255,255,0.10) 0%, transparent 100%);
+    border-radius: 50%;
+  }
+  .voice-btn-inner svg {
+    width: 17px;
+    height: 17px;
+    fill: rgba(255,255,255,0.82);
+  }
+
+  /* Top gradient fade (over messages, behind header) */
+  .top-fade {
+    position: absolute;
+    top: 59px; /* below status bar */
+    left: 0;
+    right: 0;
+    height: 140px;
+    background: linear-gradient(to bottom, var(--bg) 18%, transparent 100%);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Date separator */
+  .date-sep {
+    text-align: center;
+    padding: 12px 0;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* Margin adjustments for incoming/outgoing */
+  .msg-row.incoming .msg-content { padding-left: 0; }
+  .msg-row.outgoing .msg-content { padding-right: 0; }
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+
+  <!-- ═══ STATUS BAR ═══ -->
+  <div class="status-bar" id="statusBar">
+    <span class="status-time">9:41</span>
+    <div class="dynamic-island"></div>
+    <div class="status-icons">
+      <span>&#x25C0;</span>
+      <span>&#x25AC;</span>
+      <span>&#x1F50B;</span>
+    </div>
+  </div>
+
+  <!-- ═══ DM HEADER (120px) ═══ -->
+  <div class="header" id="header">
+    <!-- Button row -->
+    <div class="header-btn-row">
+      <!-- Back chevron (far left) -->
+      <div class="header-btn" id="backBtn">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <!-- Audio call -->
+      <div class="call-btn" id="audioCallBtn">
+        <div class="call-btn-glow"></div>
+        <div class="call-btn-ring">
+          <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
+        </div>
+      </div>
+      <!-- Video call -->
+      <div class="call-btn" id="videoCallBtn">
+        <div class="call-btn-glow"></div>
+        <div class="call-btn-ring">
+          <svg viewBox="0 0 24 24"><path d="M15 8v8H5V8h10m1-2H4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1v-3.5l4 4v-11l-4 4V7a1 1 0 00-1-1z"/></svg>
+        </div>
+      </div>
+      <!-- Stack (far right) -->
+      <div class="header-btn stack-btn" id="stackBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="5" width="8" height="8" rx="1.5"/>
+          <rect x="11" y="11" width="8" height="8" rx="1.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Avatar + Name (centered, top-aligned) -->
+    <div class="header-center" id="headerCenter">
+      <div class="avatar-eclipse">
+        <div class="avatar-glow"></div>
+        <div class="avatar-ring"></div>
+        <div class="avatar-img" id="avatarImg">
+          E
+          <div class="online-dot"></div>
+        </div>
+      </div>
+      <div class="header-name" id="headerName">Elena</div>
+    </div>
+  </div>
+
+  <!-- ═══ MESSAGES ═══ -->
+  <div class="messages" id="messagesArea">
+
+    <!-- Date separator -->
+    <div class="date-sep">Today</div>
+
+    <!-- Msg 1: incoming, first+last in group -->
+    <div class="msg-row incoming first-in-group last-in-group" id="msg1">
+      <div class="msg-content">
+        <div class="msg-text">Hey, how are you doing? &#x1F60A;</div>
+        <div class="msg-meta">
+          <span class="msg-time">10:30</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Msg 2: outgoing, first in group -->
+    <div class="msg-row outgoing first-in-group" id="msg2">
+      <div class="msg-content">
+        <div class="msg-text">I'm great! Just finished that project we discussed last week</div>
+        <div class="msg-meta">
+          <span class="msg-time">10:31</span>
+          <span class="msg-receipt read"><svg viewBox="0 0 24 24"><path d="M18 7l-1.41-1.41L9 13.17l-2.58-2.59L5 12l4 4zm-2.5 0L14.09 5.59 8.5 11.17 6.41 9.09 5 10.5l3.5 3.5z" fill="currentColor"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Msg 3: outgoing, last in group -->
+    <div class="msg-row outgoing last-in-group" id="msg3">
+      <div class="msg-content">
+        <div class="msg-text">It turned out really well!</div>
+        <div class="msg-meta">
+          <span class="msg-time">10:31</span>
+          <span class="msg-receipt read"><svg viewBox="0 0 24 24"><path d="M18 7l-1.41-1.41L9 13.17l-2.58-2.59L5 12l4 4zm-2.5 0L14.09 5.59 8.5 11.17 6.41 9.09 5 10.5l3.5 3.5z" fill="currentColor"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Msg 4: incoming, first+last -->
+    <div class="msg-row incoming first-in-group last-in-group" id="msg4">
+      <div class="msg-content">
+        <div class="msg-text">That's amazing! Can you share some screenshots?</div>
+        <div class="msg-meta">
+          <span class="msg-time">10:33</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Msg 5: outgoing, first+last -->
+    <div class="msg-row outgoing first-in-group last-in-group" id="msg5">
+      <div class="msg-content">
+        <div class="msg-text">Sure! Let me send them over. The design system is looking really clean now with the dark mode</div>
+        <div class="msg-meta">
+          <span class="msg-time">10:34</span>
+          <span class="msg-receipt read"><svg viewBox="0 0 24 24"><path d="M18 7l-1.41-1.41L9 13.17l-2.58-2.59L5 12l4 4zm-2.5 0L14.09 5.59 8.5 11.17 6.41 9.09 5 10.5l3.5 3.5z" fill="currentColor"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Msg 6: incoming, first in group -->
+    <div class="msg-row incoming first-in-group" id="msg6">
+      <div class="msg-content">
+        <div class="msg-text">I love the purple gradient!</div>
+        <div class="msg-meta">
+          <span class="msg-time">10:35</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Msg 7: incoming, last in group -->
+    <div class="msg-row incoming last-in-group" id="msg7">
+      <div class="msg-content">
+        <div class="msg-text">The glass effects are so elegant &#x2728;</div>
+        <div class="msg-meta">
+          <span class="msg-time">10:35</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Msg 8: outgoing, first+last -->
+    <div class="msg-row outgoing first-in-group last-in-group" id="msg8">
+      <div class="msg-content">
+        <div class="msg-text">Thanks! The cosmic theme really ties it all together</div>
+        <div class="msg-meta">
+          <span class="msg-time">10:36</span>
+          <span class="msg-receipt delivered"><svg viewBox="0 0 24 24"><path d="M18 7l-1.41-1.41L9 13.17l-2.58-2.59L5 12l4 4zm-2.5 0L14.09 5.59 8.5 11.17 6.41 9.09 5 10.5l3.5 3.5z" fill="currentColor"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Msg 9: incoming, first+last -->
+    <div class="msg-row incoming first-in-group last-in-group" id="msg9">
+      <div class="msg-content">
+        <div class="msg-text">Can't wait to see the final version! When do you think it'll be ready?</div>
+        <div class="msg-meta">
+          <span class="msg-time">10:38</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ INPUT AREA ═══ -->
+  <div class="input-area" id="inputArea">
+    <!-- Glass ball (left) -->
+    <div class="glass-ball-wrap" id="glassBall">
+      <div class="glass-ball-glow"></div>
+      <div class="glass-ball-ring">
+        <div class="glass-ball-inner">
+          <div class="dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Text field with belo hint -->
+    <div class="text-field" id="textField">
+      <span class="belo-hint">belo</span>
+    </div>
+    <!-- Voice button (right) -->
+    <div class="voice-btn-wrap" id="voiceBtn">
+      <div class="voice-btn-glow"></div>
+      <div class="voice-btn-ring">
+        <div class="voice-btn-inner">
+          <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Phase 2: Measurement extraction script -->
+<script>
+  // Extract bounding boxes of all key elements for Figma placement
+  function extractMeasurements() {
+    const phoneRect = document.getElementById('phone').getBoundingClientRect();
+    const ox = phoneRect.left;
+    const oy = phoneRect.top;
+
+    function getRect(id) {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      return {
+        x: Math.round(r.left - ox),
+        y: Math.round(r.top - oy),
+        width: Math.round(r.width),
+        height: Math.round(r.height),
+        text: el.textContent?.trim().substring(0, 60) || ''
+      };
+    }
+
+    const measurements = {
+      phone: { x: 0, y: 0, width: 393, height: 852 },
+      statusBar: getRect('statusBar'),
+      header: getRect('header'),
+      backBtn: getRect('backBtn'),
+      audioCallBtn: getRect('audioCallBtn'),
+      videoCallBtn: getRect('videoCallBtn'),
+      stackBtn: getRect('stackBtn'),
+      headerCenter: getRect('headerCenter'),
+      avatarImg: getRect('avatarImg'),
+      headerName: getRect('headerName'),
+      messagesArea: getRect('messagesArea'),
+      msg1: getRect('msg1'),
+      msg2: getRect('msg2'),
+      msg3: getRect('msg3'),
+      msg4: getRect('msg4'),
+      msg5: getRect('msg5'),
+      msg6: getRect('msg6'),
+      msg7: getRect('msg7'),
+      msg8: getRect('msg8'),
+      msg9: getRect('msg9'),
+      inputArea: getRect('inputArea'),
+      glassBall: getRect('glassBall'),
+      textField: getRect('textField'),
+      voiceBtn: getRect('voiceBtn'),
+    };
+
+    return measurements;
+  }
+
+  // Auto-run and log
+  window.addEventListener('load', () => {
+    const m = extractMeasurements();
+    console.log('=== MEASUREMENTS ===');
+    console.log(JSON.stringify(m, null, 2));
+  });
+</script>
+</body>
+</html>

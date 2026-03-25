@@ -1,0 +1,386 @@
+{
+  "generatedAt": "2026-03-24T17:05:38.639106",
+  "source": "Balo messaging app — static extraction from Dart source",
+  "colors": {
+    "baloColors": {
+      "dark": {
+        "gradientCenter": "#3C1749",
+        "gradientMiddle": "#4F2C5A",
+        "gradientOuter": "#1A0D2E",
+        "textPrimary": "#F0F6FC",
+        "textSecondary": "#D1C4E9",
+        "textMuted": "#9E8FB5",
+        "textOnAccent": "#FFFFFF",
+        "cardBackground": "#1E1030",
+        "cardBorder": "#336C2CA7",
+        "inputBackground": "#251545",
+        "inputBorder": "#4D9B4DCA",
+        "surfaceElevated": "#1E1030",
+        "logoColor": "#F0F6FC",
+        "bubbleOutgoing": "#6C2CA7",
+        "bubbleIncoming": "#2A1545",
+        "bubbleTextOutgoing": "#FFFFFF",
+        "bubbleTextIncoming": "#F0F6FC",
+        "accent": "#BA82ED",
+        "accentSecondary": "#E879A8",
+        "success": "#5A9E7A",
+        "error": "#B86B6B",
+        "warning": "#B8956A",
+        "overlay": "#99000000",
+        "divider": "#336C2CA7",
+        "iconPrimary": "#D4B8FF",
+        "iconSecondary": "#9E8FB5",
+        "shadowColor": "#406C2CA7",
+        "geometricShapeStroke": "#806C2CA7"
+      },
+      "light": {
+        "gradientCenter": "#FAF5F0",
+        "gradientMiddle": "#DDB8C4",
+        "gradientOuter": "#D5CBE0",
+        "textPrimary": "#1C1518",
+        "textSecondary": "#4A3F45",
+        "textMuted": "#8A7E85",
+        "textOnAccent": "#FFF8F5",
+        "cardBackground": "#FCF8F5",
+        "cardBorder": "#1A8B4A6B",
+        "inputBackground": "#F7F0EC",
+        "inputBorder": "#1A8B4A6B",
+        "surfaceElevated": "#FDF9F6",
+        "logoColor": "#5A1E5C",
+        "bubbleOutgoing": "#5E2395",
+        "bubbleIncoming": "#F5EDE6",
+        "bubbleTextOutgoing": "#FFF8F5",
+        "bubbleTextIncoming": "#1C1518",
+        "accent": "#5E2395",
+        "accentSecondary": "#D4648A",
+        "success": "#3A9E6E",
+        "error": "#CC4455",
+        "warning": "#D4923A",
+        "overlay": "#5C1C1518",
+        "divider": "#18A0707E",
+        "iconPrimary": "#4A1B5E",
+        "iconSecondary": "#9E7A8E",
+        "shadowColor": "#1E8B5070",
+        "geometricShapeStroke": "#357A4A6B"
+      }
+    },
+    "colorPalette": {
+      "primaryDark": "#2A0E68",
+      "primaryAccent": "#0F1245",
+      "pureWhite": "#FFFFFF",
+      "gradientStart": "#7F40C5",
+      "gradientEnd": "#120538",
+      "gradientMid": "#4A1D8C",
+      "backgroundDark": "#120538",
+      "backgroundMedium": "#1A0B4A",
+      "surfaceDark": "#251160",
+      "textPrimary": "#F0F6FC",
+      "textSecondary": "#D1D5DB",
+      "textMuted": "#9CA3AF",
+      "iconDefault": "#E5E7EB",
+      "textDark": "#1F1F1F",
+      "textSubtitle": "#333333",
+      "accentPink": "#B8879B",
+      "accentTeal": "#7A9E9F",
+      "accentGold": "#A89078",
+      "accentPurple": "#9088A8",
+      "accentBlue": "#7889A8",
+      "successColor": "#5A9E7A",
+      "warningColor": "#B8956A",
+      "errorColor": "#B86B6B",
+      "infoColor": "#6A88A8",
+      "messageOutgoing": "#3D1A7E",
+      "messageOutgoingLight": "#5A2D99",
+      "messageOutgoingDark": "#2A0E68",
+      "messageIncoming": "#3D3425",
+      "messageIncomingLight": "#5C4D38",
+      "messageIncomingDark": "#2E271D",
+      "glassWhite": "#1AFFFFFF",
+      "glassBorder": "#33FFFFFF",
+      "glassHighlight": "#0DFFFFFF",
+      "glassPurple": "#1A6C2CA7",
+      "avatarColors": "#6C2CA7, #9B4DCA, #5B1F8A, #7B35B8, #3D1566, #8C3DBF"
+    }
+  },
+  "typography": {
+    "titleTextStyle": {
+      "fontFamily": "inter",
+      "fontSize": 18.0,
+      "fontWeight": "w600"
+    },
+    "displayLarge": {
+      "fontFamily": "inter",
+      "fontSize": 32.0,
+      "fontWeight": "bold",
+      "letterSpacing": -0.5
+    },
+    "displayMedium": {
+      "fontFamily": "inter",
+      "fontSize": 28.0,
+      "fontWeight": "bold"
+    },
+    "headlineLarge": {
+      "fontFamily": "inter",
+      "fontSize": 24.0,
+      "fontWeight": "w600"
+    },
+    "headlineMedium": {
+      "fontFamily": "inter",
+      "fontSize": 20.0,
+      "fontWeight": "w600"
+    },
+    "titleLarge": {
+      "fontFamily": "inter",
+      "fontSize": 18.0,
+      "fontWeight": "w600"
+    },
+    "titleMedium": {
+      "fontFamily": "inter",
+      "fontSize": 16.0,
+      "fontWeight": "w500"
+    },
+    "bodyLarge": {
+      "fontFamily": "inter",
+      "fontSize": 16.0,
+      "fontWeight": "normal"
+    },
+    "bodyMedium": {
+      "fontFamily": "inter",
+      "fontSize": 14.0,
+      "fontWeight": "normal"
+    },
+    "bodySmall": {
+      "fontFamily": "inter",
+      "fontSize": 12.0,
+      "fontWeight": "normal"
+    },
+    "labelLarge": {
+      "fontFamily": "inter",
+      "fontSize": 14.0,
+      "fontWeight": "w600",
+      "letterSpacing": 0.5
+    },
+    "titleTextStyle_dup": {
+      "fontFamily": "inter",
+      "fontSize": 18.0,
+      "fontWeight": "w600"
+    },
+    "displayLarge_dup": {
+      "fontFamily": "inter",
+      "fontSize": 32.0,
+      "fontWeight": "bold",
+      "letterSpacing": -0.5
+    },
+    "displayMedium_dup": {
+      "fontFamily": "inter",
+      "fontSize": 28.0,
+      "fontWeight": "bold"
+    },
+    "headlineLarge_dup": {
+      "fontFamily": "inter",
+      "fontSize": 24.0,
+      "fontWeight": "w600"
+    },
+    "headlineMedium_dup": {
+      "fontFamily": "inter",
+      "fontSize": 20.0,
+      "fontWeight": "w600"
+    },
+    "titleLarge_dup": {
+      "fontFamily": "inter",
+      "fontSize": 18.0,
+      "fontWeight": "w600"
+    },
+    "titleMedium_dup": {
+      "fontFamily": "inter",
+      "fontSize": 16.0,
+      "fontWeight": "w500"
+    },
+    "bodyLarge_dup": {
+      "fontFamily": "inter",
+      "fontSize": 16.0,
+      "fontWeight": "normal"
+    },
+    "bodyMedium_dup": {
+      "fontFamily": "inter",
+      "fontSize": 14.0,
+      "fontWeight": "normal"
+    },
+    "bodySmall_dup": {
+      "fontFamily": "inter",
+      "fontSize": 12.0,
+      "fontWeight": "normal"
+    },
+    "labelLarge_dup": {
+      "fontFamily": "inter",
+      "fontSize": 14.0,
+      "fontWeight": "w600",
+      "letterSpacing": 0.5
+    },
+    "logoStyle": {
+      "fontFamily": "Bumbbled",
+      "fontSize": 28.0,
+      "fontWeight": "w500"
+    }
+  },
+  "gradients": {
+    "primaryBackground": {
+      "type": "linear",
+      "begin": "topLeft",
+      "end": "bottomRight",
+      "colorRefs": [
+        "ColorPalette.gradientStart",
+        "ColorPalette.gradientMid",
+        "ColorPalette.gradientEnd"
+      ],
+      "stops": [
+        0.0,
+        0.5,
+        1.0
+      ]
+    },
+    "subtleBackground": {
+      "type": "linear",
+      "begin": "topCenter",
+      "end": "bottomCenter",
+      "colorRefs": [
+        "ColorPalette.backgroundMedium",
+        "ColorPalette.backgroundDark"
+      ]
+    },
+    "primaryButton": {
+      "type": "linear",
+      "begin": "topLeft",
+      "end": "bottomRight",
+      "colors": [
+        "#1A2050"
+      ],
+      "colorRefs": [
+        "ColorPalette.primaryAccent"
+      ]
+    },
+    "accentGradient": {
+      "type": "linear",
+      "begin": "topLeft",
+      "end": "bottomRight",
+      "colors": [
+        "#64748B",
+        "#475569"
+      ]
+    },
+    "chatBackground": {
+      "type": "linear",
+      "begin": "topCenter",
+      "end": "bottomCenter",
+      "colors": [
+        "#1A0B4A"
+      ],
+      "colorRefs": [
+        "ColorPalette.backgroundDark"
+      ]
+    }
+  },
+  "shadows": {
+    "primaryGlow": [
+      {}
+    ],
+    "accentGlow": [
+      {}
+    ],
+    "subtle": [
+      {}
+    ],
+    "glass": [
+      {}
+    ]
+  },
+  "spacing": {
+    "allValues": [
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      8.0,
+      10.0,
+      12.0,
+      14.0,
+      16.0,
+      17.0,
+      18.0,
+      20.0,
+      24.0,
+      32.0,
+      48.0,
+      80.0,
+      220.0
+    ],
+    "spacingScale": [
+      2.0,
+      4.0,
+      6.0,
+      8.0,
+      10.0,
+      12.0,
+      14.0,
+      16.0,
+      20.0,
+      24.0,
+      32.0,
+      48.0
+    ]
+  },
+  "borderRadius": {
+    "allValues": [
+      2.0,
+      6.0,
+      8.0,
+      10.0,
+      12.0,
+      14.0,
+      16.0,
+      18.0,
+      20.0,
+      24.0,
+      30.0
+    ]
+  },
+  "theme": {
+    "borderRadiusValues": [
+      12.0,
+      20.0,
+      24.0,
+      30.0
+    ],
+    "paddingValues": [
+      {
+        "horizontal": 16.0,
+        "vertical": 12.0
+      },
+      {
+        "horizontal": 32.0,
+        "vertical": 16.0
+      },
+      {
+        "horizontal": 16.0,
+        "vertical": 12.0
+      },
+      {
+        "horizontal": 32.0,
+        "vertical": 16.0
+      }
+    ],
+    "elevationValues": [
+      0.0,
+      3.0,
+      4.0,
+      8.0,
+      12.0
+    ],
+    "iconSize": 24.0,
+    "fontFamilies": [
+      "Bumbbled",
+      "ABCArizonaMix"
+    ]
+  }
+}
