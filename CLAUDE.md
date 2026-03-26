@@ -71,32 +71,35 @@ claude mcp add TalkToFigma -- bunx cursor-talk-to-figma-mcp@latest
 
 ## Belo App Integration
 
-This repo also contains a bidirectional Flutter↔Figma workflow for the Belo messaging app.
+Bidirectional Flutter↔Figma workflow for the Belo messaging app.
+
+### CRITICAL: Use `use_figma`, NOT WebSocket Commands
+**All Figma design work MUST use the official Figma MCP `use_figma` tool** (from `plugin:figma:figma`).
+The WebSocket-based `mcp__TalkToFigma__*` commands are for basic automation only — they produce amateur results for design work.
+
+### Figma File
+- **Key:** `j9CUi0q2Jj5FAM1VZnEdTU`
+- **URL:** `https://www.figma.com/design/j9CUi0q2Jj5FAM1VZnEdTU/Belo-Design`
+
+### Design System (Created via use_figma)
+- **Variables:** 48 primitives + 21 semantic (Light/Dark) + 9 spacing + 8 radius = 86 total
+- **Text Styles:** 10 (Display, Headline, Title, Body, Label)
+- **Effect Styles:** 3 (Glass/Shadow, Glass/Glow, Card/Shadow)
+- **Components:** GlassBall (Dots/Mic variants), more in progress
 
 ### Belo App (Flutter)
-Located at `balo/` (git submodule). The dev branch (`origin/dev`) has the latest code.
+Located at `balo/` (git submodule). Dev branch (`origin/dev`) has the latest code.
 - Frontend: `balo/frontend/messaging_app/`
 - Key screens: Home (orbital bubbles), Chat (DM + group), Flow, Pops
 
 ### Skills & Agents (`.claude/`)
-Project-specific Claude Code skills for Flutter↔Figma workflow:
-- `.claude/skills/flutter-to-figma.md` — Full pipeline for recreating Flutter screens in Figma
-- `.claude/skills/figma-component-builder.md` — Build reusable UI components (glass ball, eclipse avatar, nav bar)
-- `.claude/skills/emulator-screenshot.md` — ADB screenshot capture and comparison
-- `.claude/skills/design-token-extractor.md` — Extract colors/fonts/gradients from Dart code
-- `.claude/agents/figma-designer.md` — Designer agent (code → Figma)
-- `.claude/agents/figma-auditor.md` — Auditor agent (emulator screenshot verification)
-- `.claude/rules/belo-figma.md` — Project-specific rules (no bubbles, correct fonts, etc.)
-
-### Utility Scripts
-- `scripts/figma-cmd.js` — Generic Figma command runner via WebSocket
-- `scripts/extract-layout.js` — ADB UI hierarchy extractor (exact element positions)
-- `scripts/flutter-inspect.js` — Flutter VM service inspector
-- `scripts/icon-paths.json` — Material Design SVG paths (14 icons)
-- `scripts/set-avatar.js` — Helper for base64 image fills
-
-### Design Tokens
-Run `cd balo/frontend/messaging_app && dart run test/golden/extract_design_tokens.dart` to extract all design tokens to `experiments/design-tokens.json`.
+- `.claude/skills/flutter-to-figma.md` — Full pipeline using `use_figma` Plugin API
+- `.claude/skills/figma-component-builder.md` — Component recipes with Plugin API patterns
+- `.claude/skills/emulator-screenshot.md` — ADB screenshot capture and honest comparison
+- `.claude/skills/design-token-extractor.md` — Dart source → JSON token extraction
+- `.claude/agents/figma-designer.md` — Designer agent (uses `use_figma`)
+- `.claude/agents/figma-auditor.md` — Auditor agent (brutally honest verification)
+- `.claude/rules/belo-figma.md` — Project rules (use `use_figma`, no bubbles, etc.)
 
 ### Android Emulator
 - Flutter SDK: `C:\Users\kmangibayev\flutter\`
@@ -104,3 +107,9 @@ Run `cd balo/frontend/messaging_app && dart run test/golden/extract_design_token
 - Emulator: Pixel 9, API 35
 - Launch: `emulator -avd Pixel_9 -no-audio`
 - Run app: `cd balo/frontend/messaging_app && flutter run -d emulator-5554`
+
+### Design Tokens
+```bash
+cd balo/frontend/messaging_app && dart run test/golden/extract_design_tokens.dart
+```
+Output: `experiments/design-tokens.json`

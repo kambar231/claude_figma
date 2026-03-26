@@ -1,33 +1,54 @@
 # Belo Figma Project Rules
 
+## The #1 Rule: Use `use_figma`, NOT WebSocket Commands
+**ALWAYS use the official Figma MCP `use_figma` tool** (from `plugin:figma:figma`) for ALL Figma design work.
+**NEVER use `mcp__TalkToFigma__*` WebSocket commands** for design creation — they produce amateur results.
+
+The `use_figma` tool executes real Figma Plugin API JavaScript, giving access to:
+- Components with variants (`figma.createComponent()`, `combineAsVariants()`)
+- Variables with modes (`figma.variables.createVariable()`)
+- Real effects (backdrop blur, drop shadows, inner shadows)
+- Auto-layout with proper sizing
+- Variable bindings on fills, strokes, padding
+
+## Figma File
+- **File key:** `j9CUi0q2Jj5FAM1VZnEdTU`
+- **URL:** `https://www.figma.com/design/j9CUi0q2Jj5FAM1VZnEdTU/Belo-Design`
+
+## Design System Architecture (Created)
+- **Primitives** collection: 48 raw color variables
+- **Color** collection: 21 semantic tokens with Light/Dark modes
+- **Spacing** collection: 9 values (2-48px)
+- **Radius** collection: 8 values (0-999px)
+- **Text styles**: 10 (Display, Headline, Title, Body, Label)
+- **Effect styles**: 3 (Glass/Shadow, Glass/Glow, Card/Shadow)
+
 ## Critical Design Rules
-1. **NO message bubbles** — The Belo app (dev branch) does NOT show colored bubble backgrounds around chat messages. Messages are plain text on the dark background.
-2. **Background is NOT solid black** — Dark mode uses a mood-based teal-blue gradient, not flat #0C0415.
-3. **Always place in open space** — Never create new frames on top of existing ones. Check node positions first.
-4. **Group related layers** — Don't leave loose elements. Group components together.
-5. **Fonts**: "Bumbbled" for "belo" logo, "ABC Arizona Mix Unlicensed Trial" for all UI text.
+1. **NO message bubbles** — Dev branch uses `_GioiaMessageBubble` with NO colored backgrounds
+2. **Mood-based glow** — Default visible state is CALM (#468CC8 teal-blue), NOT dormant purple
+3. **Build components first** — Never draw raw shapes for a full screen. Build each element as a Figma component, verify it, then instantiate
+4. **Always verify** — Use `get_screenshot` after every component build. Compare to emulator via ADB
+5. **Be brutally honest** — Never inflate accuracy scores. If it doesn't look identical, say so
 
-## Build Process
-1. Build components in isolation first, verify each one
-2. Reuse verified components — don't rebuild from scratch each iteration
-3. Use measure-verify for ALL text (create off-screen → read width → position)
-4. Use `create_vector` with SVG paths for icons (never use text characters as icons)
-5. Use `set_effect` for shadows and `set_multiple_fills` for layered gradients
+## Workflow: figma-generate-library Phases
+Follow this order strictly:
+1. Phase 0: Discovery (analyze code + inspect Figma)
+2. Phase 1: Foundations (variables, styles)
+3. Phase 2: File structure (pages)
+4. Phase 3: Components (one at a time, verify each)
+5. Phase 4: Screens (assemble from components)
 
-## WebSocket Relay
-- Start: `bun socket` (port 3055)
-- Discover channel: `curl -s http://localhost:3055/channels`
-- Multiple channels may exist — test each with `get_document_info` to find active plugin
-- Start relay automatically if not running — don't ask user
+Get user approval at each checkpoint.
 
-## Verification
-- Always compare against emulator screenshot (source of truth for visual output)
-- Code is source of truth for structure/values, emulator for visual appearance
-- Score using the 100-point rubric in the emulator-screenshot skill
+## Skills to Load
+- `figma-use` — MUST load before every `use_figma` call
+- `figma-generate-library` — for design system builds
+- `figma-generate-design` — for screen assembly
 
 ## Never Do
-- Don't add colored backgrounds to messages
-- Don't use emoji/text characters as icons (use create_vector)
-- Don't estimate text widths (always measure)
-- Don't ask user to restart Claude Code or Figma (find programmatic solutions)
-- Don't add unnecessary setup steps that block progress
+- Don't use WebSocket MCP commands for design work
+- Don't hardcode colors — bind to variables
+- Don't skip user checkpoints
+- Don't rebuild verified components from scratch
+- Don't inflate audit scores
+- Don't ask user to restart anything — find programmatic solutions

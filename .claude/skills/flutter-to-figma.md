@@ -1,75 +1,70 @@
-# Flutter-to-Figma Screen Recreation Pipeline
+# Flutter-to-Figma Design System Pipeline
 
 ## When to Use
-When the user asks to recreate a Flutter screen in Figma, convert a Flutter app page to a Figma design, or sync between Flutter and Figma.
+When recreating Flutter screens in Figma, syncing between Flutter and Figma, or building a Figma design system from Flutter code.
+
+## The Golden Rule
+**Use `use_figma` (official Figma MCP Plugin API), NOT the WebSocket `mcp__TalkToFigma__*` commands.** The `use_figma` tool executes real Figma Plugin API JavaScript — it creates proper components, variables, effects, and auto-layout. The WebSocket commands are limited to drawing primitive shapes and will never produce professional results.
 
 ## Prerequisites
-- WebSocket relay running: `bun socket` (port 3055)
-- Figma plugin "Cursor MCP Plugin" running and connected
-- Android emulator with the Flutter app (optional but recommended for verification)
-- Fonts installed: "Bumbbled" (logo), "ABC Arizona Mix Unlicensed Trial" (UI text)
+- Official Figma MCP server authenticated (`plugin:figma:figma` — needs OAuth login)
+- Figma file key (extract from URL: `figma.com/design/<fileKey>/...`)
+- `figma-use` skill loaded before every `use_figma` call
+- Android emulator with Flutter app (for verification screenshots)
 
-## Pipeline Steps
+## Pipeline (follows figma-generate-library phases)
 
-### Step 1: Establish Ground Truth
-NEVER start building without a reference image. Priority order:
-1. Emulator screenshot (best): `adb shell 'screencap /sdcard/screen.png' && adb pull //sdcard/screen.png`
-2. User-provided phone screenshot
-3. HTML simulation (last resort)
+### Phase 0: Discovery
+1. Analyze Flutter codebase for tokens: `color_palette.dart`, `app_theme.dart`, `mood_colors.dart`
+2. Run token extractor: `cd balo/frontend/messaging_app && dart run test/golden/extract_design_tokens.dart`
+3. Inspect existing Figma file via `use_figma` (read-only script to list pages, variables, components)
+4. Present plan to user — get explicit approval before creating anything
 
-### Step 2: Extract Design Tokens
-Run the Dart token extractor:
-```bash
-cd balo/frontend/messaging_app && dart run test/golden/extract_design_tokens.dart
-```
-Output: `experiments/design-tokens.json` — all colors, fonts, gradients from code.
+### Phase 1: Foundations (variables + styles)
+Create via `use_figma`:
+- **Primitives** collection: raw color values (scopes = [] to hide from pickers)
+- **Color** collection: semantic tokens with Light/Dark modes, aliased to primitives
+- **Spacing** collection: 2, 4, 8, 12, 16, 20, 24, 32, 48
+- **Radius** collection: 0, 4, 8, 16, 20, 24, 50, 999
+- **Text styles**: Display, Headline, Title, Body, Label (matching Flutter TextTheme)
+- **Effect styles**: Glass/Shadow, Glass/Glow, Card/Shadow
 
-### Step 3: Extract Layout Positions (if emulator available)
-```bash
-bun run scripts/extract-layout.js
-```
-Output: `experiments/layout-dump.json` — exact element positions from ADB UIAutomator.
-Scale to iPhone: `figmaX = dumpX * (393/411)`, `figmaY = dumpY * (852/923)`
+### Phase 2: File Structure
+Create pages: Cover → Foundations → --- → Component pages → --- → Screens
 
-### Step 4: Build Components First
-Build each UI element in isolation before assembling:
-1. Glass ball button (glow + ring + icon)
-2. Eclipse avatar bubble (glow + frosted ring + image + online dot)
-3. Navigation item (dot + label)
-4. Message text (measure-verify approach)
-5. Input area (glass balls + text field + placeholder)
+### Phase 3: Components (one at a time)
+For each Flutter widget, create a Figma Component with:
+- Proper auto-layout
+- Variable bindings (fills, strokes bound to Color variables)
+- Effect style bindings
+- Variants (using `combineAsVariants`)
+- Validate with `get_screenshot` after each component
 
-### Step 5: Assemble Screen
-Place verified components at positions from layout-dump.json.
-Frame: 393×852 (iPhone 14 Pro), corner radius 50.
+### Phase 4: Assemble Screens
+Instantiate components on Screens page, arrange to match Flutter layout.
+Verify against emulator screenshot.
 
-### Step 6: Verify
-Export Figma screenshot → compare to emulator screenshot → score → fix differences.
+## Key Technical Rules
+- `use_figma` code uses `return` to send data back (NOT `figma.closePlugin()`)
+- Colors are 0-1 range (NOT 0-255)
+- Load fonts before text ops: `await figma.loadFontAsync({family, style})`
+- Page resets each call — always `await figma.setCurrentPageAsync(page)`
+- Return ALL created node IDs for subsequent calls
+- Work incrementally — one small operation per `use_figma` call
+- Never parallelize `use_figma` calls
 
-## Key Rules
-- NO colored bubble backgrounds on chat messages (dev branch uses _GioiaMessageBubble)
-- Always use measure-verify for text: create off-screen → read width → position correctly
-- Use `create_vector` with SVG paths from `scripts/icon-paths.json` for proper icons
-- Use `set_multiple_fills` for layered gradients
-- Use `set_effect` for glass/glow effects (DROP_SHADOW + LAYER_BLUR)
-- Background in dark mode: NOT solid black — it's a mood-based teal-blue gradient
-- Place new designs in open Figma canvas space, never on top of existing frames
-- Group related layers together
+## Figma File
+- File key: `j9CUi0q2Jj5FAM1VZnEdTU`
+- URL: `https://www.figma.com/design/j9CUi0q2Jj5FAM1VZnEdTU/Belo-Design`
 
-## Available Figma Commands
-Standard: create_frame, create_rectangle, create_text, create_ellipse, create_vector,
-set_fill_color, set_fill_gradient, set_corner_radius, set_stroke_color, move_node,
-resize_node, delete_node, get_node_info, export_node_as_image, set_selections
-Advanced: set_effect, set_opacity, set_image_fill, set_blend_mode, set_multiple_fills,
-set_multiple_effects, group_nodes, flatten_node
+## Verification
+- `get_screenshot` to visually verify components
+- ADB screenshot for emulator comparison: `adb shell 'screencap /sdcard/screen.png' && adb pull //sdcard/screen.png`
+- Compare side by side — be brutally honest about differences
 
-## Fonts
-- Logo "belo": fontFamily "Bumbbled"
-- UI text: fontFamily "ABC Arizona Mix Unlicensed Trial"
-- Fallback: "Inter"
-
-## Channel Discovery
-```bash
-curl -s http://localhost:3055/channels
-```
-Pick the channel with the most clients. Test with `get_document_info` before building.
+## What NOT to Do
+- Do NOT use WebSocket `mcp__TalkToFigma__*` commands for design work
+- Do NOT draw pixels with rectangles — use proper components
+- Do NOT hardcode colors — bind to variables
+- Do NOT skip user checkpoints between phases
+- Do NOT inflate accuracy scores — if it doesn't look identical, say so

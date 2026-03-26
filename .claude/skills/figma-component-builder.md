@@ -1,93 +1,98 @@
 # Figma Component Builder
 
 ## When to Use
-When building individual UI components for the Belo app in Figma. Always build components in isolation first, verify they look correct, then use them in full screen assemblies.
+When building individual UI components for the Belo app in Figma using the proper Plugin API.
 
-## Component: Glass Ball Button
-Used for: phone, video, menu (dots), mic buttons
+## The Right Way: `use_figma` with Plugin API
+All components MUST be built using `use_figma` (official Figma MCP), NOT the WebSocket commands. This gives access to:
+- `figma.createComponent()` — proper reusable components
+- `figma.combineAsVariants()` — variant systems
+- `node.effects` — real drop shadows, inner shadows, backdrop blur
+- `node.setBoundVariable()` — bind fills/strokes to design tokens
+- Auto-layout with proper sizing modes
 
-```
-Layers (bottom to top):
-1. Glow circle: create_ellipse, size = buttonSize * 1.65
-   - fill: GRADIENT_RADIAL, glowColor@30% → glowColor@0%
-2. Button body: create_ellipse, size = buttonSize
-   - fill: dark bg color at 85-90% opacity
-   - stroke: accent at 20% opacity, 1px
-   - effect: DROP_SHADOW, accent@25%, blur 8, offset (0,2)
-3. Icon: create_vector with SVG path from scripts/icon-paths.json
-   - fill: white or accent color
-   - scale to ~14px within the button
-```
+## Component: GlassBall
+The frosted glass orb used throughout the app (menu, mic, phone, video buttons).
 
-Typical sizes: 32-44px button, 53-73px glow
+**Flutter source:** `_buildGlassBall()` in `chat_screen.dart`
 
-## Component: Eclipse Avatar Bubble
-Used for: profile avatars, chat avatars, center belo ball
+**Structure (3 layers):**
+1. **Glow blob** — `figma.createEllipse()`, 72.6px (44 × 1.65)
+   - Fill: GRADIENT_RADIAL, mood glow color at [60%, 28%, 0%] opacity
+   - Calm mood glow: `#468CC8` (teal-blue)
+   - Dormant glow: `#9B6FD4` (purple)
 
-```
-Layers (bottom to top):
-1. Glow blob: create_ellipse, size = avatarSize * 1.65
-   - fill: GRADIENT_RADIAL, glowColor@60% → @28% → @0%
-2. Frosted ring: create_ellipse, size = avatarSize * 0.94
-   - fill: bg color at 85% opacity
-   - effect: [DROP_SHADOW glow@40% blur 20 spread 2, DROP_SHADOW glow@55% blur 14 spread -8]
-3. Inner highlight: create_ellipse, same size as ring
-   - fill: GRADIENT_LINEAR, white@10% top → white@0% bottom
-4. Avatar: create_ellipse, size = avatarSize
-   - fill: gradient or set_image_fill with photo
-5. Online dot (optional): create_ellipse, size = avatarSize * 0.22
-   - fill: green #34D399, positioned bottom-right
-   - stroke: bg color, 2px (border around dot)
-```
+2. **Frosted ring** — `figma.createEllipse()`, 41.36px (44 × 0.94)
+   - Fill: `#0C0415` at 85% opacity
+   - Effects: DROP_SHADOW (blur 20, spread 2, glow@40%) + DROP_SHADOW (blur 14, spread -8, glow@55%) + BACKGROUND_BLUR (radius 10)
+   - Inner shimmer: GRADIENT_RADIAL, white@10% from top-center
 
-## Component: Message Text (No Bubbles)
-Used for: DM and group chat messages on dev branch
+3. **Icon** — dots (3 ellipses) or mic (ellipse + rectangles) or vector path
+   - Color: white at 55% opacity
+   - Size: 16px
 
-```
-- create_text at left margin (incoming: x=16, outgoing: x=60)
-  - fontSize: 15, fontFamily: "ABC Arizona Mix Unlicensed Trial"
-  - color: textPrimary #F0F6FC
-  - MEASURE-VERIFY: create off-screen, read width, reposition
-- Timestamp below: fontSize 11, textMuted #9E8FB5
-- Spacing: 8px between different senders, 3px same sender
-- For group chats: colored sender name above message (coral, teal, purple per user)
-- NO colored background rectangles
-```
+**Variants:** Icon=Dots, Icon=Mic, Icon=Phone, Icon=Video
 
-## Component: Rotary Nav Bar
-Used for: FLOW / HOME / POPS navigation at bottom
+## Component: EclipseAvatar
+Avatar with glow ring effect used on home screen and chat headers.
 
-```
-- Arc radius: 96px, spread: 60° (π/3)
-- 3 items positioned along arc from center-bottom
-- Active item: accent-colored dot (6px) + bold label (10.5px) + accent color
-- Inactive: white dot (4px) at 45% opacity + regular label (9.5px) at 65% opacity
-- Letter spacing: 1.5px on all labels
-- Font: "ABC Arizona Mix Unlicensed Trial"
-```
+**Flutter source:** `_buildEclipseBubble()` in `home_screen.dart`
 
-## Component: Date Badge
-```
-- Rounded pill: width auto, height 26px, border-radius 13px
-- Fill: pink/mauve (#D4648A) at 80% opacity
-- Text: white, 12px, centered
-- Effect: optional BACKGROUND_BLUR radius 8
-```
+**Structure:** Same 3-layer pattern as GlassBall but with:
+- Larger sizes (54px avatar, 89px glow)
+- Avatar image or initials inside the ring
+- Optional online indicator dot (green, bottom-right)
+- Optional unread badge (top-right)
 
-## Component: Input Area
-```
-- Left glass ball: 44-50px, three vertical dots icon (more_vert path)
-- Center: "belo" text in Bumbbled font, textMuted color
-- Right side: "GIF" text label (optional)
-- Right glass ball: 40-50px, mic icon (mic path)
-- Both glass balls have glow rings
-```
+## Component: DateBadge
+Pink/mauve pill with date text.
 
-## Measure-Verify Pattern
-For ANY text element:
-1. Create at (-9999, -9999) with correct font/size
-2. Call get_node_info → read actual {width, height}
-3. Delete the off-screen text
-4. Create at correct position using real measurements
-5. For right-alignment: x = screenWidth - rightMargin - measuredWidth
-6. For centering: x = centerX - measuredWidth/2
+**Structure:** Auto-layout frame with horizontal padding, rounded corners, pink fill at 80% opacity.
+
+## Component: InputBar
+Bottom input area composition.
+
+**Structure:** Frame with GlassBall instances + "belo" hint text + voice/send button.
+
+## Build Process (for each component)
+1. Switch to the component's page: `await figma.setCurrentPageAsync(page)`
+2. Create component: `figma.createComponent()`
+3. Add child layers with proper fills, effects, strokes
+4. Create variants if needed
+5. `figma.combineAsVariants([...], page)` to make a component set
+6. Layout variants in a grid
+7. Validate: `get_screenshot` to verify visually
+8. Return all created node IDs
+
+## Common Patterns
+```javascript
+// Load font before text
+await figma.loadFontAsync({ family: "Inter", style: "Regular" });
+
+// Create component
+const comp = figma.createComponent();
+comp.name = "MyComponent";
+comp.resize(width, height);
+comp.fills = [];
+comp.clipsContent = false;
+
+// Radial gradient fill
+node.fills = [{
+  type: "GRADIENT_RADIAL",
+  gradientTransform: [[1,0,0],[0,1,0]], // centered
+  gradientStops: [
+    { position: 0, color: {r,g,b,a: 0.6} },
+    { position: 1, color: {r,g,b,a: 0.0} },
+  ]
+}];
+
+// Glass effect
+node.effects = [
+  { type: "DROP_SHADOW", color: {r,g,b,a:0.4}, offset:{x:0,y:0}, radius:20, spread:2, visible:true, blendMode:"NORMAL" },
+  { type: "BACKGROUND_BLUR", radius:10, visible:true },
+];
+
+// Combine variants
+const set = figma.combineAsVariants([variant1, variant2], page);
+set.name = "ComponentName";
+```
