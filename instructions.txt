@@ -1,0 +1,6 @@
+git clone https://github.com/kambar231/claude_figma.git
+bun install && bun run build
+Install fonts from balo/frontend/messaging_app/assets/fonts/ (Bumbbled.otf + ABCArizonaMix-*.otf)
+Install Flutter SDK + Android Studio (for emulator)
+Run claude in the project — it will automatically pick up the .claude/ skills, agents, and rules
+Claude Code on the new machine will know the full pipeline, component recipes, and project rules without any re-teaching

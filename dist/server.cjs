@@ -812,6 +812,197 @@ server.tool(
   }
 );
 server.tool(
+  "set_text_properties",
+  "Set advanced text styling properties on a text node in Figma (decoration, case, alignment, spacing, etc.)",
+  {
+    nodeId: import_zod.z.string().describe("The ID of the text node to modify"),
+    textDecoration: import_zod.z.enum(["NONE", "UNDERLINE", "STRIKETHROUGH"]).optional().describe("Text decoration style"),
+    textCase: import_zod.z.enum(["ORIGINAL", "UPPER", "LOWER", "TITLE"]).optional().describe("Text case transformation"),
+    textAutoResize: import_zod.z.enum(["NONE", "WIDTH_AND_HEIGHT", "HEIGHT", "TRUNCATE"]).optional().describe("How the text node resizes"),
+    maxLines: import_zod.z.number().int().min(0).optional().describe("Maximum number of lines (0 for unlimited)"),
+    paragraphSpacing: import_zod.z.number().min(0).optional().describe("Spacing between paragraphs in pixels"),
+    paragraphIndent: import_zod.z.number().min(0).optional().describe("Paragraph indentation in pixels"),
+    lineHeight: import_zod.z.union([import_zod.z.number().min(0), import_zod.z.literal("AUTO")]).optional().describe("Line height in pixels, or 'AUTO'"),
+    letterSpacing: import_zod.z.number().optional().describe("Letter spacing in pixels"),
+    textAlignHorizontal: import_zod.z.enum(["LEFT", "CENTER", "RIGHT", "JUSTIFIED"]).optional().describe("Horizontal text alignment"),
+    textAlignVertical: import_zod.z.enum(["TOP", "CENTER", "BOTTOM"]).optional().describe("Vertical text alignment")
+  },
+  async ({ nodeId, ...props }) => {
+    try {
+      const result = await sendCommandToFigma("set_text_properties", { nodeId, ...props });
+      return { content: [{ type: "text", text: `Set text properties on "${result.name}" (${result.id})` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error setting text properties: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "boolean_operation",
+  "Perform a boolean operation (union, subtract, intersect, exclude) on multiple nodes in Figma",
+  {
+    nodeIds: import_zod.z.array(import_zod.z.string()).min(2).describe("Array of node IDs to combine (minimum 2)"),
+    operation: import_zod.z.enum(["UNION", "SUBTRACT", "INTERSECT", "EXCLUDE"]).describe("The boolean operation to perform"),
+    name: import_zod.z.string().optional().describe("Optional name for the resulting node")
+  },
+  async ({ nodeIds, operation, name }) => {
+    try {
+      const result = await sendCommandToFigma("boolean_operation", { nodeIds, operation, name });
+      return { content: [{ type: "text", text: `Boolean ${operation} created: "${result.name}" (${result.id})` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error performing boolean operation: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "set_constraints",
+  "Set responsive constraints (horizontal and vertical pinning) on a node in Figma",
+  {
+    nodeId: import_zod.z.string().describe("The ID of the node to modify"),
+    horizontal: import_zod.z.enum(["MIN", "CENTER", "MAX", "STRETCH", "SCALE"]).optional().describe("Horizontal constraint"),
+    vertical: import_zod.z.enum(["MIN", "CENTER", "MAX", "STRETCH", "SCALE"]).optional().describe("Vertical constraint")
+  },
+  async ({ nodeId, horizontal, vertical }) => {
+    try {
+      const result = await sendCommandToFigma("set_constraints", { nodeId, horizontal, vertical });
+      return { content: [{ type: "text", text: `Set constraints on "${result.name}": ${JSON.stringify(result.constraints)}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error setting constraints: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "set_stroke_properties",
+  "Set advanced stroke properties (cap, join, align, dash pattern, weight) on a node in Figma",
+  {
+    nodeId: import_zod.z.string().describe("The ID of the node to modify"),
+    strokeCap: import_zod.z.enum(["NONE", "ROUND", "SQUARE", "ARROW_LINES", "ARROW_EQUILATERAL"]).optional().describe("Stroke cap style"),
+    strokeJoin: import_zod.z.enum(["MITER", "BEVEL", "ROUND"]).optional().describe("Stroke join style"),
+    strokeAlign: import_zod.z.enum(["INSIDE", "OUTSIDE", "CENTER"]).optional().describe("Stroke alignment relative to the node boundary"),
+    dashPattern: import_zod.z.array(import_zod.z.number()).optional().describe("Dash pattern as [dashLength, gapLength]"),
+    strokeWeight: import_zod.z.number().min(0).optional().describe("Stroke weight in pixels")
+  },
+  async ({ nodeId, ...props }) => {
+    try {
+      const result = await sendCommandToFigma("set_stroke_properties", { nodeId, ...props });
+      return { content: [{ type: "text", text: `Set stroke properties on "${result.name}" (${result.id})` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error setting stroke properties: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "create_component",
+  "Create a new component in Figma, either empty or by converting an existing node",
+  {
+    fromNodeId: import_zod.z.string().optional().describe("ID of an existing node to convert into a component (copies children, fills, effects)"),
+    name: import_zod.z.string().optional().describe("Component name"),
+    x: import_zod.z.number().optional().describe("X position (for new empty component)"),
+    y: import_zod.z.number().optional().describe("Y position (for new empty component)"),
+    width: import_zod.z.number().optional().describe("Width (for new empty component, default 100)"),
+    height: import_zod.z.number().optional().describe("Height (for new empty component, default 100)")
+  },
+  async ({ fromNodeId, name, x, y, width, height }) => {
+    try {
+      const result = await sendCommandToFigma("create_component", { fromNodeId, name, x, y, width, height });
+      return { content: [{ type: "text", text: `Created component "${result.name}" (${result.id})` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error creating component: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "set_mask",
+  "Set or unset a node as a mask in Figma. The mask node clips sibling nodes above it in the layer order.",
+  {
+    nodeId: import_zod.z.string().describe("The ID of the node to set as mask"),
+    isMask: import_zod.z.boolean().optional().describe("Whether to enable (true) or disable (false) masking. Defaults to true.")
+  },
+  async ({ nodeId, isMask }) => {
+    try {
+      const result = await sendCommandToFigma("set_mask", { nodeId, isMask });
+      return { content: [{ type: "text", text: `Set mask on "${result.name}": isMask=${result.isMask}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error setting mask: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "set_plugin_data",
+  "Store or retrieve custom key-value data on a Figma node (persists with the file)",
+  {
+    nodeId: import_zod.z.string().describe("The ID of the node to store data on"),
+    key: import_zod.z.string().describe("The key name for the data"),
+    value: import_zod.z.string().optional().describe("The value to store. Omit to just read the current value.")
+  },
+  async ({ nodeId, key, value }) => {
+    try {
+      const result = await sendCommandToFigma("set_plugin_data", { nodeId, key, value });
+      return { content: [{ type: "text", text: `Plugin data on node ${result.id}: ${result.key}=${result.value}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error setting plugin data: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "create_page",
+  "Create a new page in the Figma document, optionally switching to it",
+  {
+    name: import_zod.z.string().optional().describe("Name for the new page (default: 'New Page')"),
+    setCurrent: import_zod.z.boolean().optional().describe("Whether to switch to the new page after creation")
+  },
+  async ({ name, setCurrent }) => {
+    try {
+      const result = await sendCommandToFigma("create_page", { name, setCurrent });
+      return { content: [{ type: "text", text: `Created page "${result.name}" (${result.id})${setCurrent ? " and switched to it" : ""}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error creating page: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "set_per_corner_radius",
+  "Set individual corner radii on a node in Figma (each corner independently)",
+  {
+    nodeId: import_zod.z.string().describe("The ID of the node to modify"),
+    topLeft: import_zod.z.number().min(0).optional().describe("Top-left corner radius"),
+    topRight: import_zod.z.number().min(0).optional().describe("Top-right corner radius"),
+    bottomRight: import_zod.z.number().min(0).optional().describe("Bottom-right corner radius"),
+    bottomLeft: import_zod.z.number().min(0).optional().describe("Bottom-left corner radius")
+  },
+  async ({ nodeId, topLeft, topRight, bottomRight, bottomLeft }) => {
+    try {
+      const result = await sendCommandToFigma("set_per_corner_radius", { nodeId, topLeft, topRight, bottomRight, bottomLeft });
+      const r = result;
+      return { content: [{ type: "text", text: `Set per-corner radius on "${r.name}": TL=${r.topLeft} TR=${r.topRight} BR=${r.bottomRight} BL=${r.bottomLeft}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error setting per-corner radius: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "create_style",
+  "Create a reusable style (paint, text, or effect) in Figma",
+  {
+    type: import_zod.z.enum(["PAINT", "TEXT", "EFFECT"]).describe("The type of style to create"),
+    name: import_zod.z.string().describe("Name for the style"),
+    paints: import_zod.z.array(import_zod.z.record(import_zod.z.unknown())).optional().describe("Paint fills for PAINT style type"),
+    fontSize: import_zod.z.number().optional().describe("Font size for TEXT style type"),
+    fontName: import_zod.z.object({
+      family: import_zod.z.string(),
+      style: import_zod.z.string()
+    }).optional().describe("Font family and style for TEXT style type"),
+    effects: import_zod.z.array(import_zod.z.record(import_zod.z.unknown())).optional().describe("Effects array for EFFECT style type")
+  },
+  async ({ type, name, paints, fontSize, fontName, effects }) => {
+    try {
+      const result = await sendCommandToFigma("create_style", { type, name, paints, fontSize, fontName, effects });
+      return { content: [{ type: "text", text: `Created ${type} style "${result.name}" (${result.id})` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error creating style: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
   "move_node",
   "Move a node to a new position in Figma",
   {
@@ -2823,6 +3014,159 @@ server.tool(
           }
         ]
       };
+    }
+  }
+);
+server.tool(
+  "manage_variables",
+  "Manage Figma variables (design tokens): list, create, or bind variables to nodes",
+  {
+    action: import_zod.z.enum(["list", "create", "bind"]).describe("Action to perform: list all variables, create a new variable, or bind a variable to a node"),
+    name: import_zod.z.string().optional().describe("Name for the new variable (required for 'create')"),
+    resolvedType: import_zod.z.enum(["COLOR", "FLOAT", "STRING", "BOOLEAN"]).optional().describe("Variable type (default: COLOR)"),
+    value: import_zod.z.unknown().optional().describe("Initial value for the variable"),
+    collectionId: import_zod.z.string().optional().describe("ID of an existing variable collection to add to"),
+    collectionName: import_zod.z.string().optional().describe("Name for a new collection if none exists (default: 'Design Tokens')"),
+    nodeId: import_zod.z.string().optional().describe("Node ID to bind a variable to (required for 'bind')"),
+    variableId: import_zod.z.string().optional().describe("Variable ID to bind (required for 'bind')"),
+    field: import_zod.z.string().optional().describe("Property field to bind the variable to, e.g. 'fills/0/color' (required for 'bind')")
+  },
+  async ({ action, name, resolvedType, value, collectionId, collectionName, nodeId, variableId, field }) => {
+    try {
+      const result = await sendCommandToFigma("manage_variables", { action, name, resolvedType, value, collectionId, collectionName, nodeId, variableId, field });
+      return { content: [{ type: "text", text: `Variables ${action} result: ${JSON.stringify(result)}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error managing variables: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "set_viewport",
+  "Control the Figma viewport: set zoom level, pan to a position, or scroll-and-zoom to fit specific nodes",
+  {
+    zoom: import_zod.z.number().min(0.01).max(256).optional().describe("Zoom level (1 = 100%)"),
+    center: import_zod.z.object({
+      x: import_zod.z.number().describe("X coordinate to center on"),
+      y: import_zod.z.number().describe("Y coordinate to center on")
+    }).optional().describe("Center the viewport on this point"),
+    scrollAndZoomIntoView: import_zod.z.boolean().optional().describe("If true, scroll and zoom to fit the specified nodeIds"),
+    nodeIds: import_zod.z.array(import_zod.z.string()).optional().describe("Node IDs to scroll and zoom into view")
+  },
+  async ({ zoom, center, scrollAndZoomIntoView, nodeIds }) => {
+    try {
+      const result = await sendCommandToFigma("set_viewport", { zoom, center, scrollAndZoomIntoView, nodeIds });
+      return { content: [{ type: "text", text: `Viewport updated: ${JSON.stringify(result)}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error setting viewport: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "manage_pages",
+  "Manage pages in a Figma document: list, create, switch, rename, or delete pages",
+  {
+    action: import_zod.z.enum(["list", "create", "switch", "rename", "delete"]).describe("Action to perform on pages"),
+    name: import_zod.z.string().optional().describe("Name for the page (used with 'create' and 'rename')"),
+    pageId: import_zod.z.string().optional().describe("Page ID (used with 'switch', 'rename', 'delete')"),
+    pageName: import_zod.z.string().optional().describe("Page name to switch to (alternative to pageId for 'switch')"),
+    setCurrent: import_zod.z.boolean().optional().describe("Whether to switch to the new page after creation")
+  },
+  async ({ action, name, pageId, pageName, setCurrent }) => {
+    try {
+      const result = await sendCommandToFigma("manage_pages", { action, name, pageId, pageName, setCurrent });
+      return { content: [{ type: "text", text: `Pages ${action} result: ${JSON.stringify(result)}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error managing pages: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "set_export_settings",
+  "Configure export settings on a Figma node (format, scale, suffix)",
+  {
+    nodeId: import_zod.z.string().describe("The ID of the node to configure exports on"),
+    settings: import_zod.z.array(import_zod.z.object({
+      format: import_zod.z.enum(["PNG", "JPG", "SVG", "PDF"]).optional().describe("Export format (default: PNG)"),
+      suffix: import_zod.z.string().optional().describe("Filename suffix (e.g. '@2x')"),
+      constraint: import_zod.z.object({
+        type: import_zod.z.enum(["SCALE", "WIDTH", "HEIGHT"]).describe("Constraint type"),
+        value: import_zod.z.number().describe("Constraint value")
+      }).optional().describe("Size constraint (default: SCALE 1x)")
+    })).describe("Array of export settings to apply")
+  },
+  async ({ nodeId, settings }) => {
+    try {
+      const result = await sendCommandToFigma("set_export_settings", { nodeId, settings });
+      return { content: [{ type: "text", text: `Export settings applied: ${JSON.stringify(result)}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error setting export settings: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "set_scroll_behavior",
+  "Set overflow scrolling and clipping behavior on a frame node in Figma",
+  {
+    nodeId: import_zod.z.string().describe("The ID of the frame node to modify"),
+    overflowDirection: import_zod.z.enum(["NONE", "HORIZONTAL", "VERTICAL", "BOTH"]).optional().describe("Scroll overflow direction"),
+    clipsContent: import_zod.z.boolean().optional().describe("Whether the frame clips its children")
+  },
+  async ({ nodeId, overflowDirection, clipsContent }) => {
+    try {
+      const result = await sendCommandToFigma("set_scroll_behavior", { nodeId, overflowDirection, clipsContent });
+      return { content: [{ type: "text", text: `Scroll behavior set on node: ${JSON.stringify(result)}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error setting scroll behavior: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "reparent_node",
+  "Move a node to a different parent in the Figma layer hierarchy",
+  {
+    nodeId: import_zod.z.string().describe("The ID of the node to move"),
+    newParentId: import_zod.z.string().describe("The ID of the new parent node"),
+    index: import_zod.z.number().int().min(0).optional().describe("Insert position within the new parent (default: append at end)")
+  },
+  async ({ nodeId, newParentId, index }) => {
+    try {
+      const result = await sendCommandToFigma("reparent_node", { nodeId, newParentId, index });
+      return { content: [{ type: "text", text: `Reparented node: ${JSON.stringify(result)}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error reparenting node: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "reorder_node",
+  "Change the z-order of a node within its parent (front, back, forward, backward, or specific index)",
+  {
+    nodeId: import_zod.z.string().describe("The ID of the node to reorder"),
+    position: import_zod.z.enum(["front", "back", "forward", "backward"]).optional().describe("Move to front/back or one step forward/backward"),
+    index: import_zod.z.number().int().min(0).optional().describe("Specific index to move to (alternative to position)")
+  },
+  async ({ nodeId, position, index }) => {
+    try {
+      const result = await sendCommandToFigma("reorder_node", { nodeId, position, index });
+      return { content: [{ type: "text", text: `Reordered node: ${JSON.stringify(result)}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error reordering node: ${error instanceof Error ? error.message : String(error)}` }] };
+    }
+  }
+);
+server.tool(
+  "get_plugin_data",
+  "Read stored plugin data from a Figma node (all keys or a specific key)",
+  {
+    nodeId: import_zod.z.string().describe("The ID of the node to read data from"),
+    key: import_zod.z.string().optional().describe("Specific key to read. Omit to get all stored key-value pairs.")
+  },
+  async ({ nodeId, key }) => {
+    try {
+      const result = await sendCommandToFigma("get_plugin_data", { nodeId, key });
+      return { content: [{ type: "text", text: `Plugin data: ${JSON.stringify(result)}` }] };
+    } catch (error) {
+      return { content: [{ type: "text", text: `Error getting plugin data: ${error instanceof Error ? error.message : String(error)}` }] };
     }
   }
 );
