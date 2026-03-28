@@ -3,8 +3,5 @@ node_modules/
 .env
 dist/
 docs/
-
-# Local workspace files (not part of upstream)
-belo_figma/
-ws-bridge.cjs
-SETUP_MY_ENV.md
+*.png
+*.pdf

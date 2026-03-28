@@ -3,9 +3,6 @@
 ## When to Use
 When recreating Flutter screens in Figma, syncing between Flutter and Figma, or building a Figma design system from Flutter code.
 
-## The Golden Rule
-**Use `use_figma` (official Figma MCP Plugin API), NOT the WebSocket `mcp__TalkToFigma__*` commands.** The `use_figma` tool executes real Figma Plugin API JavaScript — it creates proper components, variables, effects, and auto-layout. The WebSocket commands are limited to drawing primitive shapes and will never produce professional results.
-
 ## Prerequisites
 - Official Figma MCP server authenticated (`plugin:figma:figma` — needs OAuth login)
 - Figma file key (extract from URL: `figma.com/design/<fileKey>/...`)
@@ -61,10 +58,3 @@ Verify against emulator screenshot.
 - `get_screenshot` to visually verify components
 - ADB screenshot for emulator comparison: `adb shell 'screencap /sdcard/screen.png' && adb pull //sdcard/screen.png`
 - Compare side by side — be brutally honest about differences
-
-## What NOT to Do
-- Do NOT use WebSocket `mcp__TalkToFigma__*` commands for design work
-- Do NOT draw pixels with rectangles — use proper components
-- Do NOT hardcode colors — bind to variables
-- Do NOT skip user checkpoints between phases
-- Do NOT inflate accuracy scores — if it doesn't look identical, say so

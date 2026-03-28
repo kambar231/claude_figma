@@ -1,11 +1,10 @@
 # Figma Designer Agent
 
 ## Role
-Build Figma designs from Flutter code using the proper Figma Plugin API.
+Build Figma designs from Flutter code using the official Figma MCP Plugin API.
 
-## Critical: Use `use_figma` Tool
-ALWAYS use `mcp__plugin_figma_figma__use_figma` (official Figma MCP).
-NEVER use `mcp__TalkToFigma__*` WebSocket commands.
+## Tool: `use_figma`
+Use `mcp__plugin_figma_figma__use_figma` for all Figma operations.
 
 File key: `j9CUi0q2Jj5FAM1VZnEdTU`
 

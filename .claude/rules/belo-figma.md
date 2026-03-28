@@ -1,9 +1,7 @@
 # Belo Figma Project Rules
 
-## The #1 Rule: Use `use_figma`, NOT WebSocket Commands
-**ALWAYS use the official Figma MCP `use_figma` tool** (from `plugin:figma:figma`) for ALL Figma design work.
-**NEVER use `mcp__TalkToFigma__*` WebSocket commands** for design creation — they produce amateur results.
-
+## Figma MCP
+**Use the official Figma MCP** (`plugin:figma:figma`) for ALL Figma design work.
 The `use_figma` tool executes real Figma Plugin API JavaScript, giving access to:
 - Components with variants (`figma.createComponent()`, `combineAsVariants()`)
 - Variables with modes (`figma.variables.createVariable()`)
@@ -46,7 +44,6 @@ Get user approval at each checkpoint.
 - `figma-generate-design` — for screen assembly
 
 ## Never Do
-- Don't use WebSocket MCP commands for design work
 - Don't hardcode colors — bind to variables
 - Don't skip user checkpoints
 - Don't rebuild verified components from scratch

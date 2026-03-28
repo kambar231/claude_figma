@@ -1,10 +1,10 @@
 # Figma Component Builder
 
 ## When to Use
-When building individual UI components for the Belo app in Figma using the proper Plugin API.
+When building individual UI components for the Belo app in Figma using the Plugin API.
 
-## The Right Way: `use_figma` with Plugin API
-All components MUST be built using `use_figma` (official Figma MCP), NOT the WebSocket commands. This gives access to:
+## Building Components with `use_figma`
+All components are built using the official Figma MCP `use_figma` tool. This gives access to:
 - `figma.createComponent()` — proper reusable components
 - `figma.combineAsVariants()` — variant systems
 - `node.effects` — real drop shadows, inner shadows, backdrop blur
