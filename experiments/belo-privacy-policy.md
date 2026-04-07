@@ -1,10 +1,10 @@
 # Belo Privacy Policy
 
-**Last Updated: March 25, 2026**
+**Last Updated: March 28, 2026**
 
 ## 1. Introduction
 
-Belo ("we," "us," or "our") is a private messaging application. This Privacy Policy explains what information we collect, how we use it, and the choices you have. We are committed to protecting your privacy and use end-to-end encryption to secure your messages.
+Belo ("we," "us," or "our") is a private messaging application built by GIOIA. This Privacy Policy explains what information we collect, how we use it, and the choices you have. We are committed to protecting your privacy and use end-to-end encryption to secure your messages.
 
 This policy applies to the Belo mobile application and all related services. By using Belo, you agree to the collection and use of information as described in this policy. If you do not agree, please do not use the app.
 
@@ -16,10 +16,10 @@ We process your personal data based on the following legal grounds:
 
 - **Contract performance** — processing necessary to provide the Belo messaging service you signed up for (delivering messages, enabling calls, managing your account).
 - **Legitimate interests** — processing necessary for security, fraud prevention, and service improvement, where our interests do not override your rights.
-- **Consent** — where you have given explicit consent for specific processing (e.g., optional profile information, enabling notifications).
+- **Consent** — where you have given explicit consent for specific processing (e.g., optional profile information, enabling notifications, mood scoring).
 - **Legal obligation** — processing required to comply with applicable laws.
 
-If you are in the European Economic Area (EEA) or United Kingdom, Belo Network Ltd acts as the data controller for your personal data.
+If you are in the European Economic Area (EEA) or United Kingdom, GIOIA acts as the data controller for your personal data.
 
 ## 3. Information We Collect
 
@@ -34,7 +34,7 @@ When you create a Belo account, we collect:
 
 ### 3.2 Messages and Content
 
-- **Messages** — text messages you send and receive are end-to-end encrypted using the Signal protocol (X25519 + Ed25519). We cannot read your message content.
+- **Messages** — text messages you send and receive are end-to-end encrypted using X25519 key exchange with AES-256-GCM encryption. We cannot read your message content.
 - **Media** — photos, videos, voice messages, audio recordings, and files you share in conversations are encrypted in transit.
 - **Pops** — ephemeral status updates you create, including text and media, with your chosen visibility settings (all contacts, close friends, or golden circle).
 - **Notes** — notes you create within conversations.
@@ -51,7 +51,7 @@ When you create a Belo account, we collect:
 
 - **Message metadata** — delivery and read receipt timestamps, message status (sent, delivered, read). You can disable read receipts in settings.
 - **Online status** — your online/offline status and last seen timestamp.
-- **GIF search queries** — when you search for GIFs, queries are sent to our servers to fetch results from Tenor. These queries are transient, not stored, and not linked to your account.
+- **GIF search queries** — when you search for GIFs, queries are sent to our servers to fetch results. These queries are transient, not stored, and not linked to your account.
 - **Link previews** — when you send a URL, our server may fetch a preview (title, image) for display purposes.
 
 ### 3.5 Device Information
@@ -64,8 +64,18 @@ When you create a Belo account, we collect:
 
 - **Call metadata** — call type (audio/video), participants, and duration. Call audio and video streams are transmitted peer-to-peer (WebRTC) or via LiveKit for group calls and are not stored on our servers.
 - **Peek sessions** — real-time video previews use the same infrastructure as calls. Streams are not recorded or stored.
+- **Connection setup** — to establish peer-to-peer connections for calls and Peek, your device contacts Google's public STUN servers (stun.l.google.com) for NAT traversal. This transmits your IP address to Google solely for the purpose of establishing a direct connection. No call content is shared.
 
-### 3.7 Cookies and Local Storage
+### 3.7 Mood Awareness
+
+Belo includes an ambient mood awareness feature that provides visual feedback about the emotional tone of your conversations (such as chat background colors and contact aura glows).
+
+- **On-device analysis** — sentiment analysis is performed entirely on your device using a local linguistic model. No message content is sent to external servers for this analysis.
+- **Mood scores** — the resulting mood scores (emotional valence and energy level) are transmitted to our servers as message metadata to enable mood visualizations across devices.
+- **No content exposure** — only numeric scores are transmitted, never the underlying message text.
+- **Consent** — you consent to mood scoring during onboarding. Mood scoring is part of Belo's core communication experience.
+
+### 3.8 Cookies and Local Storage
 
 Belo is a mobile application and does not use browser cookies. Local data is stored on your device using:
 
@@ -91,6 +101,7 @@ We use the information we collect to:
 - **Provide the service** — deliver messages, enable calls, sync contacts, and display profiles.
 - **Send notifications** — deliver push notifications for new messages, calls, and other activity.
 - **Authenticate your account** — verify your phone number and manage login sessions.
+- **Provide mood awareness** — analyze conversation tone on-device and display emotional context through visual indicators.
 - **Ensure safety and security** — prevent fraud, spam, abuse, and unauthorized access. This may include reviewing reported content and taking action against accounts that violate our Terms of Service.
 - **Enable cross-device functionality** — keep your conversations accessible when you switch devices (account data and encryption key re-establishment).
 - **Improve the service** — fix bugs and improve performance (using aggregated, non-identifiable data only).
@@ -104,13 +115,14 @@ We do NOT use your information for:
 
 ## 6. End-to-End Encryption
 
-Belo uses end-to-end encryption (E2EE) based on the Signal protocol for all direct messages. This means:
+Belo uses end-to-end encryption (E2EE) inspired by the Signal protocol's key management design for all direct messages. This means:
 
 - Messages are encrypted on your device before being sent.
 - Only you and the intended recipient can read message content.
 - We cannot read, access, or decrypt your messages.
 - Encryption keys are generated and stored locally on your device in secure storage (iOS Keychain / Android EncryptedSharedPreferences).
-- Key exchange uses X25519 Diffie-Hellman with Ed25519 signing, including identity keys, signed pre-keys, and one-time pre-keys.
+- Key exchange uses X25519 Diffie-Hellman, with identity keys, signed pre-keys, and one-time pre-keys for forward secrecy.
+- Message content is encrypted using AES-256-GCM authenticated encryption.
 
 ## 7. Data Sharing
 
@@ -122,6 +134,7 @@ When you use Belo, certain information is visible to people you communicate with
 - Your online status and last seen (unless disabled in settings).
 - Messages and media you send to them.
 - Read receipts (unless disabled in settings).
+- Mood indicators reflecting the emotional tone of your shared conversation.
 
 Users you communicate with may save, copy, or share the content you send them outside of Belo. We cannot control how recipients use content after delivery.
 
@@ -134,13 +147,13 @@ We use the following third-party services to operate Belo:
 | **Firebase Authentication** (Google) | Phone number verification | Phone number |
 | **Firebase Cloud Messaging** (Google) | Push notification delivery | Device token, platform type |
 | **LiveKit** | Group video/audio calls | Call streams (real-time, not stored) |
-| **Tenor** (Google) | GIF search | Search queries (not linked to identity) |
+| **Google STUN Servers** (Google) | P2P call/Peek connection setup | IP address (for NAT traversal only) |
 
 These providers process data only as necessary to provide their services and are bound by their own privacy policies.
 
 ### 7.3 Corporate Structure
 
-Belo is operated by Belo Network Ltd. Your data may be shared within our corporate group for the purposes described in this policy. Any affiliated companies are bound by the same data protection obligations.
+Belo is operated by GIOIA. Your data may be shared within our corporate group for the purposes described in this policy. Any affiliated companies are bound by the same data protection obligations.
 
 ### 7.4 Law Enforcement
 
@@ -151,6 +164,7 @@ Information we can provide, if legally required:
 - Account information (phone number, display name, username, profile photo)
 - Device tokens and platform type
 - Account creation and last login timestamps
+- Mood scores associated with conversations (numeric values only, not message content)
 
 We will evaluate each request on its merits and may challenge requests we believe are overly broad or unlawful. We will notify affected users unless prohibited by law.
 
@@ -181,6 +195,10 @@ Message content in direct conversations is encrypted with keys that only exist o
 
 Encryption keys, authentication tokens, and sensitive credentials are stored in your device's secure enclave (iOS Keychain / Android EncryptedSharedPreferences). Message history is cached in a local encrypted database.
 
+### 8.4 Mood Data Security
+
+Mood scores are derived on-device and transmitted as numeric metadata. The underlying message content used for analysis never leaves your device. Mood scores alone cannot be used to reconstruct message content.
+
 ## 9. Data Retention
 
 - **Account data** — retained while your account is active. Deleted when you delete your account.
@@ -188,6 +206,7 @@ Encryption keys, authentication tokens, and sensitive credentials are stored in 
 - **Messages on device** — stored locally on your device; you can delete them at any time.
 - **Disappearing messages** — automatically deleted after the expiration time you set.
 - **Pops** — automatically expire and are deleted after the set duration.
+- **Mood scores** — retained as message metadata for the same duration as the associated message.
 - **Push notification tokens** — deleted from our servers when you log out.
 - **Security metadata** — IP addresses and device information associated with your account may be retained for up to 12 months for safety and anti-abuse purposes.
 - **Account inactivity** — accounts that remain inactive for an extended period may be subject to automatic deletion. We will attempt to notify you before deleting an inactive account.
@@ -213,6 +232,7 @@ You can permanently delete your account at any time. This will:
 - Remove your account information from our servers.
 - Delete your profile, contacts, and all associated data.
 - Remove your push notification tokens.
+- Delete all mood scores associated with your conversations.
 - This action is permanent and cannot be undone.
 
 ### 10.3 Data Access and Portability
@@ -282,20 +302,21 @@ Your continued use of Belo after changes are posted constitutes your acceptance 
 
 | Date | Changes |
 |------|---------|
+| March 28, 2026 | Added mood awareness disclosure (Section 3.7), Google STUN server disclosure (Section 3.6), corrected encryption description (Section 6), updated contact emails. |
 | March 25, 2026 | Initial privacy policy published. |
 
 ## 17. Contact Us
 
 If you have questions about this Privacy Policy, want to exercise your data rights, or have concerns about our data practices, contact us at:
 
-**Email:** privacy@belo.network
+**Email:** support@belo.network
 
-**Website:** https://belo.network
+**Website:** https://baloweb.vercel.app/
 
 For EEA/UK residents, you may also contact our data protection representative at:
 
-**Email:** dpo@belo.network
+**Email:** roman@belo.network
 
 ---
 
-*This privacy policy was last updated on March 25, 2026.*
+*This privacy policy was last updated on March 28, 2026.*
